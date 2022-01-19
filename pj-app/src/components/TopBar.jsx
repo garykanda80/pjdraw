@@ -126,28 +126,7 @@ export default function TopBar() {
               </ListItemIcon>
               <ListItemText>Home</ListItemText>
             </MenuItem>
-            <MenuItem onClick={handleMenuClose} component={Link} to={"visits"}>
-              <ListItemIcon>
-                <TourIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>Appointments</ListItemText>
-            </MenuItem>
-            <MenuItem
-              onClick={handleMenuClose}
-              component={Link}
-              to={"expenses"}
-            >
-              <ListItemIcon>
-                <RequestQuoteIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>Expenses</ListItemText>
-            </MenuItem>
-            <MenuItem>
-              <ListItemIcon>
-                <AddShoppingCartIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>Oders</ListItemText>
-            </MenuItem>
+           
             <Divider />
             <MenuItem
               onClick={handleMenuClose}
@@ -167,21 +146,9 @@ export default function TopBar() {
               <ListItemIcon>
                 <CategoryIcon fontSize="small" />
               </ListItemIcon>
-              <ListItemText>Products</ListItemText>
+              <ListItemText>Draws</ListItemText>
             </MenuItem>
-            <Divider />
-            <MenuItem onClick={handleMenuClose} component={Link} to={"users"}>
-              <ListItemIcon>
-                <ManageAccountsIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>Users</ListItemText>
-            </MenuItem>
-            <MenuItem onClick={handleMenuClose} component={Link} to={"users"}>
-              <ListItemIcon>
-                <AssignmentIndIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>Profile</ListItemText>
-            </MenuItem>
+           
           </MenuList>
         </Menu>
       </Paper>
@@ -199,33 +166,7 @@ export default function TopBar() {
           }}
         >
           <MenuList>
-            <MenuItem onClick={handleAccountClose}>
-              <ListItemIcon>
-                <LoyaltyIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>{userDetails.subsname}</ListItemText>
-            </MenuItem>
-            <MenuItem onClick={handleAccountClose}>
-              <ListItemIcon>
-                <BadgeIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>
-                {userDetails.usrfname} {userDetails.usrlname}
-              </ListItemText>
-            </MenuItem>
-            <MenuItem onClick={handleAccountClose}>
-              <ListItemIcon>
-                <EmailIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>{userDetails.usremail}</ListItemText>
-            </MenuItem>
-            <MenuItem onClick={handleAccountClose}>
-              <ListItemIcon>
-                <VerifiedUserIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>{userDetails.usrrole}</ListItemText>
-            </MenuItem>
-            <Divider />
+            
             <MenuItem>
               <Button
                 sx={{

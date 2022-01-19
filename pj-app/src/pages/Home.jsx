@@ -10,7 +10,7 @@ export default function Home() {
   const userDetails = useRecoilValue(userDetailsState);
 
   useEffect(() => {
-    setHeaderText("Welcome " + userDetails.usrfname);
+    setHeaderText("Punjab Jewellers");
   });
 
   return (
@@ -18,28 +18,16 @@ export default function Home() {
       <Grid container spacing={2}>
         <Grid item xs={12} md={6} lg={4}>
           <Card sx={{ height: "300px" }}>
-            <CardHeader title="Appointments"></CardHeader>
-            <CardContent>Appointments</CardContent>
+            <CardHeader title="Customer"></CardHeader>
+            <CardContent>Customer Details</CardContent>
           </Card>
         </Grid>
         <Grid item xs={12} md={6} lg={4}>
           <Card sx={{ height: "300px" }}>
-            <CardHeader title="Expenses"></CardHeader>
-            <CardContent>Expense Status</CardContent>
+            <CardHeader title="Draws"></CardHeader>
+            <CardContent>Draws Details</CardContent>
           </Card>
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <Card sx={{ height: "300px" }}>
-            <CardHeader title="Sales"></CardHeader>
-            <CardContent>My Sales</CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <Card sx={{ height: "300px" }}>
-            <CardHeader title="Profile"></CardHeader>
-            <CardContent>My PRofile</CardContent>
-          </Card>
-        </Grid>
+        </Grid>        
       </Grid>
     </>
   );

@@ -22,6 +22,7 @@ import {
   where,
 } from "firebase/firestore";
 import { appdb } from "../utils/firebase-config";
+import { CompressOutlined } from "@mui/icons-material";
 
 export default function AppLayout() {
   const user = useRecoilValue(userDetailsState);
@@ -38,20 +39,26 @@ export default function AppLayout() {
   };
 
   useEffect(() => {
-    setHeaderText("Appointments");
+    setHeaderText("Punjab Jewellers");
 
     const fetchCustomers = async () => {
+      // const q = query(
+      //   collection(appdb, "customer"),
+      //   where("subsid", "==", user.subsid),
+      //   orderBy("custname")
+      // );
       const q = query(
-        collection(appdb, "customer"),
-        where("subsid", "==", user.subsid),
-        orderBy("custname")
-      );
+          collection(appdb, "customer")
+        );
+        console.log(q);
       try {
         const unsubscribe = onSnapshot(q, (snapshot) => {
+         
           setCustomers(
             snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
           );
         });
+        console.log(unsubscribe);
         return unsubscribe;
       } catch (error) {
         setErrorMsg(error);
