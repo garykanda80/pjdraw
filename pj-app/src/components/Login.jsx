@@ -33,6 +33,7 @@ export default function Login() {
   const { login } = useAuth();
 
   async function handleSubmit(e) {
+    console.log(process.env.REACT_APP_FIREBASE_API_KEY)
     e?.preventDefault();
     try {
       setError("");
@@ -175,10 +176,7 @@ export default function Login() {
         >
           <Typography sx={{ mt: "15px" }}>
             <Link to="/forgot-password">Forgot password?</Link>
-          </Typography>
-          <Typography sx={{ mt: "15px" }}>
-            <Link to="https://uxli.com">www.uxli.com</Link>
-          </Typography>
+          </Typography>          
         </Box>
       </Paper>
     </Grid>
