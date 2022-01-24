@@ -35,6 +35,8 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { headerTextState, userDetailsState } from "../store/atoms/appState";
 
+import * as dbService from "../utils/firestore";
+
 export default function TopBar() {
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
   const [accountAnchorEl, setAccountAnchorEl] = useState(null);
@@ -71,6 +73,21 @@ export default function TopBar() {
   const handleAccountClose = () => {
     setAccountAnchorEl(null);
   };
+  async function handleCustomer(){ 
+    try {
+      const x = await dbService.handleCreateCustomer()
+      // if (x.status === "Success") {
+      //   console.log("customer added with Success")
+      // } else {
+      //   console.log("customer added with warning" + x.status)
+      //   //setError(x.msg);
+      // }
+    } catch (error) {
+      console.log("error adding customer" + error)
+      //setError(error);
+    }
+  };
+
 
   return (
     <div>
@@ -86,7 +103,17 @@ export default function TopBar() {
           >
             <MenuIcon />
           </IconButton>
-
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="home"
+            sx={{ mr: 2 }}
+            onClick={handleCustomer}
+          >
+            <EmailIcon />
+          </IconButton>
+          
           <Typography
             variant="h6"
             component="div"
@@ -106,6 +133,7 @@ export default function TopBar() {
             <AccountCircle />
           </IconButton>
         </Toolbar>
+
       </AppBar>
       <Toolbar />
       <Paper sx={{ width: 320, maxWidth: "100%" }}>
@@ -151,8 +179,8 @@ export default function TopBar() {
            
           </MenuList>
         </Menu>
-      </Paper>
-
+      </Paper>    
+          
       {error && <Alert severity="error">{error}</Alert>}
       <Paper sx={{ width: 320, maxWidth: "100%" }}>
         <Menu

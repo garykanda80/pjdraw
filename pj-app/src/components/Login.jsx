@@ -58,7 +58,7 @@ export default function Login() {
             sx={{
               height: 64,
             }}
-            alt="uKarya"
+            alt="Punjab Jeweller"
             src={Logo}
           />
 

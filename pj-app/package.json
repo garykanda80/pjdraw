@@ -1,7 +1,7 @@
 {
   "name": "ukarya",
   "version": "0.1.0",
-  "homepage": "https://ukarya-dev.web.app",
+  "homepage": "https://pj-dev.web.app",
   "private": true,
   "dependencies": {
     "@date-io/date-fns": "^2.11.0",

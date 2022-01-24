@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
 import { useSetRecoilState, useRecoilValue } from "recoil";
-
 import { headerTextState, userDetailsState } from "../store/atoms/appState";
-
-import { Card, Grid, CardHeader, CardContent } from "@mui/material";
+import { Button, Card, Grid, CardHeader, CardContent } from "@mui/material";
+import * as dbService from "../utils/firestore";
 
 export default function Home() {
   const setHeaderText = useSetRecoilState(headerTextState);
@@ -19,13 +18,19 @@ export default function Home() {
         <Grid item xs={12} md={6} lg={4}>
           <Card sx={{ height: "300px" }}>
             <CardHeader title="Customer"></CardHeader>
-            <CardContent>Customer Details</CardContent>
+            <CardContent>Total Active Customers: {
+              async () => {
+                  await dbService.handleCustomerCount();
+                }
+              }
+            </CardContent>
+            
           </Card>
         </Grid>
         <Grid item xs={12} md={6} lg={4}>
           <Card sx={{ height: "300px" }}>
             <CardHeader title="Draws"></CardHeader>
-            <CardContent>Draws Details</CardContent>
+            <CardContent>Total Active Draws:</CardContent>
           </Card>
         </Grid>        
       </Grid>

@@ -29,7 +29,7 @@ self.addEventListener("fetch", (event) => {
 
 // Update a service worker
 self.addEventListener("activate", (event) => {
-  let cacheWhitelist = ["ukarya"];
+  let cacheWhitelist = ["pjapp"];
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(

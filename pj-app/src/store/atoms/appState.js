@@ -3,7 +3,7 @@ import { atom } from "recoil";
 /////////Global States/////////////
 export const headerTextState = atom({
   key: "headertext",
-  default: "ukarya - Global",
+  default: "PunjabJewellers - Global",
 });
 
 export const userDetailsState = atom({

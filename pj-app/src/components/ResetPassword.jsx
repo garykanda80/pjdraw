@@ -50,7 +50,7 @@ export default function ResetPassword() {
             sx={{
               height: 64,
             }}
-            alt="uKarya"
+            alt="Punjab Jeweller"
             src={Logo}
           />
 
