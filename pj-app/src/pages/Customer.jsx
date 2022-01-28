@@ -1,0 +1,353 @@
+import React, { useEffect, useState } from "react";
+import {
+  AccordionDetails,
+  AccordionSummary,
+  Accordion,
+  MenuItem,
+  TableContainer,
+  TableCell,
+  TableBody,
+  TableHead,
+  TableRow,
+  Table,
+  rows,
+  Paper,
+  Label,
+  Button,
+  Alert,
+  Card,
+  Box,
+  LinearProgress,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  TextField,
+  DialogActions,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  Typography,
+  CardContent,
+  CardActionArea,
+  InputBase,
+  IconButton,
+} from "@mui/material";
+
+import { styled, alpha } from "@mui/material/styles";
+import SearchIcon from "@mui/icons-material/Search";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import {
+  userDetailsState,
+  headerTextState,
+  customerSearchState,
+  phoneNoState,
+  monthState
+} from "../store/atoms/appState";
+import {
+  collection,
+  onSnapshot,
+  query,
+  where,
+  doc,
+  getDoc,
+  serverTimestamp,
+  getDocs,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  orderBy,
+} from "firebase/firestore";
+import { appdb } from "../utils/firebase-config";
+//import { Navigate } from "react-router-dom";
+
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  "&:hover": {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginLeft: 0,
+  marginTop: 2,
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: theme.spacing(1),
+    width: "auto",
+  },
+}));
+
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: "inherit",
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      width: "18ch",
+      "&:focus": {
+        width: "20ch",
+      },
+    },
+  },
+}));
+
+export default function Customers() {
+  const user = useRecoilValue(userDetailsState);
+  const months = useRecoilValue(monthState);
+  const setHeaderText = useSetRecoilState(headerTextState);
+  
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [setDispCustomer, customerSearchState] = useState();
+  const [expanded, setExpanded] = useState(false);
+  
+  const handleChange = (panel) => (isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
+
+  const handleCustomerSearch = async (e) => {
+    if ((e.target.value.toLowerCase()).length >= 10)
+    {
+      //console.log(e.target.value.toLowerCase())
+    //   let custFilter = setPhoneNo.filter((prod) =>
+    //   prod.id.toLowerCase().includes(e.target.value.toLowerCase())
+    // );
+    setIsLoading(true);
+        const collectionRef = query(
+          collection(appdb, "draw"),
+          where("customerPhone", "==", e.target.value.toLowerCase())
+        );
+        await onSnapshot(collectionRef,(snapshot) => {
+          customerSearchState(
+              snapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+              }))
+            )        
+        },
+          (error) => {
+            setError(error);
+          }
+        );
+        setIsLoading(false);
+      //return data
+      //(setPhoneNo)
+      //setDispCustomer("Gurpreet")
+    }
+    // else{
+    //   //customerSearchState(setPhoneNo)
+    // }
+    // const a = [{
+    //   Id: "07846861338-b",
+    //   customerPhone: "07846861338",
+    //   payment: {
+    //     January: {
+    //       paymentDate: "24012022",
+    //       paymentMethod: "cash"
+    //     }
+    //   }
+    // },
+    // {
+    //   Id: "07846861338-c",
+    //   customerPhone: "07846861338",
+    //   payment: {
+    //     January: {
+    //       paymentDate: "24012022",
+    //       paymentMethod: "cash"
+    //     }
+    //   }
+    // },
+    // {
+    //   Id: "07846861339-a",
+    //   customerPhone: "07846861339",
+    //   payment: {
+    //     January: {
+    //       paymentDate: "24012022",
+    //       paymentMethod: "cash"
+    //     }
+    //   }
+    // },
+    // {
+    //   Id: "07846861339-b",
+    //   customerPhone: "07846861339",
+    //   payment: {
+    //     January: {
+    //       paymentDate: "24012022",
+    //       paymentMethod: "cash"
+    //     }
+    //   }
+    // }]
+  };
+
+   //load list of values for available user roles
+   const [setPhoneNo, phoneNoState] = useState();
+   const d = [];
+   useEffect(() => {
+
+    const fetchPhone = async () => {
+      setIsLoading(true);
+        const collectionRef = collection(appdb, "phoneNumbers");
+        const data = await onSnapshot(collectionRef,(snapshot) => {
+          phoneNoState(
+            snapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }))
+          )
+        },
+          (error) => {
+            setError(error);
+          }
+        );
+        setIsLoading(false);
+        
+        return data;        
+    };
+
+    fetchPhone();
+   }, []);
+
+  useEffect(() => {
+    setHeaderText("Customer Draw");
+  }, []);
+
+  return (
+    <>
+      <Grid
+        container
+        sx={{
+          display: "flex",
+          direction: "row",
+          alignItems: "center",
+        }}
+      >
+        <Grid
+          item
+          xs={6}
+          sm={6}
+          md={6}
+          sx={{ justifyContent: "flex-start", alignItems: "center" }}
+        >
+          <Search>
+            <SearchIconWrapper>
+              <SearchIcon />
+            </SearchIconWrapper>
+            <StyledInputBase
+              placeholder="Enter Phone No.."
+              inputProps={{ "aria-label": "search" }}
+              onChange={
+               handleCustomerSearch
+              }
+            />
+          </Search>
+          
+        </Grid>
+        <Grid
+          item
+          xs={6}
+          sm={6}
+          md={6}
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "flex-end",
+          }}
+        >
+          <IconButton disabled={isLoading} 
+          //onClick={handleAddProduct}
+          >
+            <AddCircleOutlineIcon color="secondary" />
+          </IconButton>
+        </Grid>
+      </Grid>
+      {error && <Alert severity="error">{error}</Alert>}
+      {isLoading && (
+        <Box sx={{ width: "100%" }}>
+          <LinearProgress />
+        </Box>
+      )}
+
+{setDispCustomer &&
+        setDispCustomer.map((customer) => (
+          <Card
+            //key={customer.id}
+            sx={{
+              mt: 0.5,
+              "&:before": {
+                display: "none",
+              },
+              borderBottom: "1px solid #dddddd",
+              borderRadius: "20px",
+              boxShadow: "none"
+            }}
+          >
+            <CardActionArea
+              // data-prodid={product.id}
+              // data-prodtype={product.prodtype}
+              // data-prodcategory={product.prodcategory}
+              // data-prodname={product.prodname}
+              // data-produnitprice={product.produnitprice}
+              // data-prodtaxrate={product.prodtaxrate}
+              // data-prodlistprice={product.prodlistprice}
+              // data-prodstatus={product.prodstatus}
+              // onClick={handleEditProduct}
+            >
+              <CardContent>
+                <Grid
+                  container
+                  sx={{
+                    display: "flex",
+                    direction: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <Grid
+                    item
+                    xs={6}
+                    sm={6}
+                    md={6}
+                    sx={{ justifyContent: "flex-start" }}
+                  >
+                    <Typography>{customer.customerId}</Typography>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={6}
+                    sm={6}
+                    md={6}
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "flex-end",
+                    }}
+                  >
+                    <Typography>{customer.id}</Typography>
+                  </Grid>
+                 
+      </Grid>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        ))}
+
+             
+    </>
+  );
+}

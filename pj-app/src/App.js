@@ -6,7 +6,7 @@ import { RecoilRoot } from "recoil";
 import LoginPage from "./pages/LoginPage";
 import ForgetPassword from "./pages/ForgetPassword";
 import AppLayout from "./pages/AppLayout";
-// import DisplayCustomers from "./pages/DisplayCustomers";
+import Customer from "./pages/Customer";
 // import CreateCustomer from "./pages/CreateCustomer";
 // import Products from "./pages/Products";
 // import Visits from "./pages/Visits";
@@ -51,8 +51,8 @@ function App() {
               <Route path="editvisit" element={<EditVisit />} />
               <Route path="expenses" element={<DisplayExpenses />} />
               <Route path="customers" element={<DisplayCustomers />} />
-              <Route path="createcustomer" element={<CreateCustomer />} />
-              <Route path="products" element={<Products />} /> */}
+              <Route path="createcustomer" element={<CreateCustomer />} /> */}
+              <Route path="customer" element={<Customer />} /> 
               <Route path="users" element={<Users />} />
             </Route>
           </Routes>

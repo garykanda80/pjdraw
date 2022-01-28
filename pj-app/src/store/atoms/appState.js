@@ -12,15 +12,27 @@ export const userDetailsState = atom({
 });
 
 /////////Customer States//////////////////
-export const customerLOVState = atom({
-  key: "customerlov",
-  default: [],
+export const customerCountState = atom({
+  key: "customerCount",
+  default: 0,
 });
 
-export const customersState = atom({
+export const drawCountState = atom({
+  key: "drawCount",
+  default: 0,
+});
+
+export const customerSearchState = atom({
   key: "customers",
   default: [],
 });
+
+
+export const DispCustomerState = atom({
+  key: "Customer",
+  default: [],
+});
+
 
 export const productsState = atom({
   key: "products",
@@ -41,6 +53,29 @@ export const editVisitState = atom({
   key: "editvisit",
   default: "",
 });
+
+export const phoneNoState = atom({
+  key: "phoneNumbers",
+  default: []
+}) 
+
+export const monthState = atom({
+  key: "months",
+  default: [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ]
+}) 
 
 export const timeSelectValueState = atom({
   key: "selecttimevalue",
@@ -97,14 +132,17 @@ export const timeSelectValueState = atom({
 });
 
 const appState = {
-  customersState,
-  customerLOVState,
+  customerSearchState,
+  customerCountState,
   headerTextState,
   userDetailsState,
   productsState,
   appointmentsState,
   timeSelectValueState,
   editVisitState,
+  DispCustomerState,
+  phoneNoState,
+  monthState
 };
 
 export default appState;
