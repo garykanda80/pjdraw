@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   AccordionDetails,
+  Link,
   AccordionSummary,
   Accordion,
   MenuItem,
@@ -46,6 +47,7 @@ import {
   headerTextState,
   customerSearchState,
   phoneNoState,
+  customerState,
   monthState
 } from "../store/atoms/appState";
 import {
@@ -63,7 +65,7 @@ import {
   orderBy,
 } from "firebase/firestore";
 import { appdb } from "../utils/firebase-config";
-//import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -112,17 +114,35 @@ export default function Customers() {
   const user = useRecoilValue(userDetailsState);
   const months = useRecoilValue(monthState);
   const setHeaderText = useSetRecoilState(headerTextState);
-  
+  const setCustomer = useSetRecoilState(customerState);
+  const [customers, setDispCustomer ] = useRecoilState(customerSearchState);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [setDispCustomer, customerSearchState] = useState();
   const [expanded, setExpanded] = useState(false);
-  
-  const handleChange = (panel) => (isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
+
+  //const [setDispCustomer, customerSearchState] = useState();
+  const navigate = useNavigate();
+
+  // customerSearchState();
+  // const handleChange = (panel) => (isExpanded) => {
+  //   setExpanded(isExpanded ? panel : false);
+  // };
+
+// if (customers){
+//   customerSearchState(customers)
+// }
+
+   //////////////////EDIT Customer/////////////
+
+   const handleEditCustomer = (e) => {
+      const customerId = e.currentTarget.dataset.custid
+      console.log(customerId)
+      setCustomer(customerId);
+      navigate("/editcustomer");
   };
 
   const handleCustomerSearch = async (e) => {
+    console.log("Hello2222-----")
     if ((e.target.value.toLowerCase()).length >= 10)
     {
       //console.log(e.target.value.toLowerCase())
@@ -135,7 +155,7 @@ export default function Customers() {
           where("customerPhone", "==", e.target.value.toLowerCase())
         );
         await onSnapshot(collectionRef,(snapshot) => {
-          customerSearchState(
+          setDispCustomer(
               snapshot.docs.map((doc) => ({
                 id: doc.id,
                 ...doc.data(),
@@ -147,58 +167,11 @@ export default function Customers() {
           }
         );
         setIsLoading(false);
-      //return data
-      //(setPhoneNo)
-      //setDispCustomer("Gurpreet")
     }
-    // else{
-    //   //customerSearchState(setPhoneNo)
-    // }
-    // const a = [{
-    //   Id: "07846861338-b",
-    //   customerPhone: "07846861338",
-    //   payment: {
-    //     January: {
-    //       paymentDate: "24012022",
-    //       paymentMethod: "cash"
-    //     }
-    //   }
-    // },
-    // {
-    //   Id: "07846861338-c",
-    //   customerPhone: "07846861338",
-    //   payment: {
-    //     January: {
-    //       paymentDate: "24012022",
-    //       paymentMethod: "cash"
-    //     }
-    //   }
-    // },
-    // {
-    //   Id: "07846861339-a",
-    //   customerPhone: "07846861339",
-    //   payment: {
-    //     January: {
-    //       paymentDate: "24012022",
-    //       paymentMethod: "cash"
-    //     }
-    //   }
-    // },
-    // {
-    //   Id: "07846861339-b",
-    //   customerPhone: "07846861339",
-    //   payment: {
-    //     January: {
-    //       paymentDate: "24012022",
-    //       paymentMethod: "cash"
-    //     }
-    //   }
-    // }]
   };
 
    //load list of values for available user roles
    const [setPhoneNo, phoneNoState] = useState();
-   const d = [];
    useEffect(() => {
 
     const fetchPhone = async () => {
@@ -220,12 +193,7 @@ export default function Customers() {
         
         return data;        
     };
-
-    fetchPhone();
-   }, []);
-
-  useEffect(() => {
-    setHeaderText("Customer Draw");
+    setHeaderText("Customer");
   }, []);
 
   return (
@@ -284,10 +252,10 @@ export default function Customers() {
         </Box>
       )}
 
-{setDispCustomer &&
-        setDispCustomer.map((customer) => (
+{customers &&
+        customers.map((customer) => (
           <Card
-            //key={customer.id}
+            key={customer.id}
             sx={{
               mt: 0.5,
               "&:before": {
@@ -296,20 +264,13 @@ export default function Customers() {
               borderBottom: "1px solid #dddddd",
               borderRadius: "20px",
               boxShadow: "none"
+              //,...(product.prodstatus === "Dormant" && {background: "#eecaca",}
             }}
           >
             <CardActionArea
-              // data-prodid={product.id}
-              // data-prodtype={product.prodtype}
-              // data-prodcategory={product.prodcategory}
-              // data-prodname={product.prodname}
-              // data-produnitprice={product.produnitprice}
-              // data-prodtaxrate={product.prodtaxrate}
-              // data-prodlistprice={product.prodlistprice}
-              // data-prodstatus={product.prodstatus}
-              // onClick={handleEditProduct}
-            >
-              <CardContent>
+            data-custid={customer.id}
+            onClick={handleEditCustomer}>
+<CardContent>
                 <Grid
                   container
                   sx={{
@@ -325,27 +286,16 @@ export default function Customers() {
                     md={6}
                     sx={{ justifyContent: "flex-start" }}
                   >
-                    <Typography>{customer.customerId}</Typography>
+<Typography>{customer.id}</Typography>
+<Typography>{customer.customerId}</Typography>
                   </Grid>
-                  <Grid
-                    item
-                    xs={6}
-                    sm={6}
-                    md={6}
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "flex-end",
-                    }}
-                  >
-                    <Typography>{customer.id}</Typography>
                   </Grid>
-                 
-      </Grid>
-              </CardContent>
+
+                  </CardContent>
             </CardActionArea>
           </Card>
-        ))}
+        )
+        )}
 
              
     </>

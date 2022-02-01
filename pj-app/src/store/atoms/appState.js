@@ -12,6 +12,11 @@ export const userDetailsState = atom({
 });
 
 /////////Customer States//////////////////
+export const customerState = atom({
+  key: "customer",
+  default: {},
+});
+
 export const customerCountState = atom({
   key: "customerCount",
   default: 0,

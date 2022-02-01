@@ -14,7 +14,7 @@ import Customer from "./pages/Customer";
 // import DisplayExpenses from "./pages/DisplayExpenses";
 import Home from "./pages/Home";
 import Users from "./pages/Users";
-import EditVisit from "./pages/EditVisit";
+import EditCustomer from "./pages/EditCustomer";
 
 function RequireAuth({ children }) {
   const { currentUser } = useAuth();
@@ -47,12 +47,12 @@ function App() {
               {/* <Route path="visits" element={<Visits />}>
                 <Route path="editvisit" element={<EditVisit />} />
               </Route>
-              <Route path="createvisits" element={<CreateVisits />} />
-              <Route path="editvisit" element={<EditVisit />} />
+              <Route path="createvisits" element={<CreateVisits />} />              
               <Route path="expenses" element={<DisplayExpenses />} />
               <Route path="customers" element={<DisplayCustomers />} />
               <Route path="createcustomer" element={<CreateCustomer />} /> */}
               <Route path="customer" element={<Customer />} /> 
+              <Route path="editcustomer" element={<EditCustomer />} />
               <Route path="users" element={<Users />} />
             </Route>
           </Routes>
