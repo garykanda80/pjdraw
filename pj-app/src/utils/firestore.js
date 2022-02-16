@@ -75,74 +75,27 @@ import { appdb } from "./firebase-config";
 
 export const handleCreateCustomer = async () => {
   const draw = {
-    drawID: "draw1-a"
+    drawID: "draw1-b"
   };
 
   const draw_detail = {
-    customerId: "07846861338-c",
+    customerId: "07846861338-b",
     customerPhone: "07846861338",
-    payment: {
-      january: {
-        id:1,
-        paymentDate: "24012022",
-        paymentMethod: "cash"
-      },
-      february: {
-        id:2,
-        paymentDate: "24012022",
-        paymentMethod: "cash"
-      },
-      march: {
-        id:3,
-        paymentDate: "24012022",
-        paymentMethod: "cash"
-      },
-      april: {
-        id:4,
-        paymentDate: "24012022",
-        paymentMethod: "cash"
-      },
-      may: {
-        id:5,
-        paymentDate: "24012022",
-        paymentMethod: "cash"
-      },
-      june: {
-        id:6,
-        paymentDate: "24012022",
-        paymentMethod: "cash"
-      },
-      july: {
-        id:7,
-        paymentDate: "24012022",
-        paymentMethod: "cash"
-      },
-      august: {
-        id:8,
-        paymentDate: "24012022",
-        paymentMethod: "cash"
-      },
-      september: {
-        id:9,
-        paymentDate: "24012022",
-        paymentMethod: "cash"
-      },
-      october: {
-        id:10,
-        paymentDate: "24012022",
-        paymentMethod: "cash"
-      },
-      november: {
-        id:11,
-        paymentDate: "24012022",
-        paymentMethod: "cash"
-      },
-      december: {
-        id:12,
-        paymentDate: "24012022",
-        paymentMethod: "cash"
-      }
-    }
+    payment: [
+        {id:1,month: 'January',paymentDate: "2022-02-28",paymentMethod: "Cash"},
+          {id:2,month: 'February',paymentDate: "2022-02-28",paymentMethod: "Card"},
+          {id:3,month: 'March',paymentDate: "2022-03-20",paymentMethod: "Zylle"},
+          {id:4,month: 'April',paymentDate: "",paymentMethod: ""},
+          {id:5,month: 'May',paymentDate: "",paymentMethod: ""},
+          {id:6,month: 'June',paymentDate: "",paymentMethod: ""},
+          {id:7,month: 'July',paymentDate: "",paymentMethod: ""},
+          {id:8,month: 'August',paymentDate: "",paymentMethod: ""},
+          {id:9,month: 'September',paymentDate: "",paymentMethod: ""},
+          {id:10,month: 'October',paymentDate: "",paymentMethod: ""},
+          {id:11,month: 'November',paymentDate: "",paymentMethod: ""},
+          {id:12,month: 'December',paymentDate: "",paymentMethod: ""}
+    ]
+   
   };
 
   const collectionRef = collection(appdb, "draw");

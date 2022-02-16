@@ -32,6 +32,10 @@ export const customerSearchState = atom({
   default: [],
 });
 
+// export const customerState = atom({
+//   key: "customer",
+//   default: [],
+// });
 
 export const DispCustomerState = atom({
   key: "Customer",
@@ -82,58 +86,26 @@ export const monthState = atom({
   ]
 }) 
 
-export const timeSelectValueState = atom({
-  key: "selecttimevalue",
-  default: [
-    "08:00",
-    "08:30",
-    "09:00",
-    "09:30",
-    "10:00",
-    "10:30",
-    "11:00",
-    "11:30",
-    "12:00",
-    "12:30",
-    "13:00",
-    "13:30",
-    "14:00",
-    "14:30",
-    "15:00",
-    "15:30",
-    "16:00",
-    "16:30",
-    "17:00",
-    "17:30",
-    "18:00",
-    "18:30",
-    "19:00",
-    "19:30",
-    "20:00",
-    "20:30",
-    "21:00",
-    "21:30",
-    "22:00",
-    "22:30",
-    "23:00",
-    "23:30",
-    "00:00",
-    "00:30",
-    "01:00",
-    "01:30",
-    "02:00",
-    "02:30",
-    "03:00",
-    "03:30",
-    "04:00",
-    "04:30",
-    "05:00",
-    "05:30",
-    "06:00",
-    "06:30",
-    "07:00",
-    "07:30",
-  ],
+export const draw_detail = atom({
+  key: "draw",
+  default: {
+    customerId: "07846861338-c",
+    customerPhone: "07846861338",
+    payment: [
+        {id:1,month: 'January',paymentDate: "2022-02-28",paymentMethod: "Cash"},
+          {id:2,month: 'February',paymentDate: "2022-02-28",paymentMethod: "Card"},
+          {id:3,month: 'March',paymentDate: "",paymentMethod: ""},
+          {id:4,month: 'April',paymentDate: "",paymentMethod: ""},
+          {id:5,month: 'May',paymentDate: "",paymentMethod: ""},
+          {id:6,month: 'June',paymentDate: "",paymentMethod: ""},
+          {id:7,month: 'July',paymentDate: "",paymentMethod: ""},
+          {id:8,month: 'August',paymentDate: "",paymentMethod: ""},
+          {id:9,month: 'September',paymentDate: "",paymentMethod: ""},
+          {id:10,month: 'October',paymentDate: "",paymentMethod: ""},
+          {id:11,month: 'November',paymentDate: "",paymentMethod: ""},
+          {id:12,month: 'December',paymentDate: "",paymentMethod: ""}
+    ]
+  }
 });
 
 const appState = {
@@ -143,11 +115,12 @@ const appState = {
   userDetailsState,
   productsState,
   appointmentsState,
-  timeSelectValueState,
   editVisitState,
   DispCustomerState,
   phoneNoState,
-  monthState
+  monthState,
+  draw_detail,
+  customerState
 };
 
 export default appState;

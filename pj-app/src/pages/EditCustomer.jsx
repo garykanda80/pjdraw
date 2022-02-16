@@ -47,7 +47,8 @@ import {
   customerSearchState,
   phoneNoState,
   monthState,
-  customerState
+  customerState,
+  draw_detail
 } from "../store/atoms/appState";
 import {
   collection,
@@ -64,7 +65,9 @@ import {
   orderBy,
 } from "firebase/firestore";
 import { appdb } from "../utils/firebase-config";
-//import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import PaymentMethod from "../components/PaymentType";
+import PaymentDate from "../components/PaymentDate";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -112,17 +115,36 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function EditCustomers() {
   const user = useRecoilValue(userDetailsState);
   const months = useRecoilValue(monthState);
+  const detail = useRecoilValue(draw_detail);
   const setHeaderText = useSetRecoilState(headerTextState);
   const customerId = useRecoilValue(customerState);
+  const [customers, setDispCustomer ] = useRecoilState(customerSearchState);
   
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [setDispCustomer, customerSearchState] = useState();
+  //const [setDispCustomer, customerSearchState] = useState();
   const [expanded, setExpanded] = useState(false);
-  
+  const customer = customers.filter(customer => customer.id === customerId);
+ // const payment = customer.payment
+ const payments = customer.map(a => a.payment)
+ const payment = payments[0]
+ //const p = payment[0]
+console.log('+++++++++++++++++++')
+console.log(customer)
+console.log(payment)
+console.log(detail.payment)
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    setHeaderText("Customer");
+  const checkCustomer = () => {
+    if (customer.length === 0) {
+      {console.log(customer.length  + "out....")}
+      navigate("/customer");
+    }
+  };
+
+  checkCustomer();
+  useEffect(() => {   
+    setHeaderText("Customer");   
   }, []);
 
   return (
@@ -152,10 +174,78 @@ export default function EditCustomers() {
           <LinearProgress />
         </Box>
       )}
+<Card
+            key={customer.id}
+            sx={{
+              mt: 0.5,
+              "&:before": {
+                display: "none",
+              },
+              borderBottom: "1px solid #dddddd",
+              borderRadius: "20px",
+              boxShadow: "none"
+            }}
+          >
+            {/* <CardActionArea
+            data-custid={customer.id}> */}
+<CardContent>
+  <Grid sx={{
+    mt: 1.0,
+    ml: 1.0,
+    "&:before": {
+      display: "none",
+    },
+  }
+}>
+    <Typography>Customer Phone: {customer.map(a => a.customerPhone)}</Typography>
+    <Typography>Customer Draw ID: {customer.map(a => a.customerId)}</Typography>
+    <Typography>Draw ID: {customer.map(a => a.id)}</Typography>
+</Grid>
 
-      {
-        console.log("Customer Id..." + customerId)
-      }
+<TableContainer component={Paper}
+sx={{
+    mt: 2.0,
+    "&:before": {
+      display: "none",
+    },
+  }
+}
+>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table" size="small">
+        <TableHead>
+          <TableRow>
+            <TableCell>Draw Month</TableCell>
+            <TableCell>Payment Type</TableCell>
+            <TableCell>Payment Date</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {months.map((month, i) => (                     
+            <TableRow key={month}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+              <TableCell component="th" scope="row">{
+              month              
+              }
+               
+              </TableCell>
+              {/* {console.log('++++++++++++' + payment[i])} */}
+              <TableCell>
+                <PaymentMethod method={detail.payment[i].paymentMethod}/>
+              </TableCell>
+              <TableCell>
+                <PaymentDate date={detail.payment[i].paymentDate}/>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+
+</CardContent>
+            {/* </CardActionArea> */}
+          </Card>
+      
     </>
   );
 }

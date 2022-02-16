@@ -166,6 +166,8 @@ export default function Customers() {
             setError(error);
           }
         );
+        console.log('//////////////////-------------------')
+        console.log(customers);
         setIsLoading(false);
     }
   };
