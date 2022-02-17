@@ -192,9 +192,47 @@ const customerExists = Object.keys(customer).length === 0;
     },
   }
 }>
-    <Typography>Customer Phone: {customer.customerPhone}</Typography>
-    <Typography>Customer Draw ID: {customer.customerId}</Typography>
-    <Typography>Draw ID: {customer.id}</Typography>
+   <Box
+      component="form"
+      sx={{
+        '& .MuiTextField-root': { m: 1, width: '25ch' },
+      }}
+      noValidate
+      autoComplete="off"
+    >        
+      <>
+   <TextField
+          id="standard-read-only-input"
+          label="Customer Phone"
+          defaultValue={customer.customerPhone}
+          InputProps={{
+            readOnly: true,
+          }}
+          variant="standard"
+        />
+
+<TextField
+          id="standard-read-only-input"
+          label="Customer Id"
+          defaultValue={customer.customerId}
+          InputProps={{
+            readOnly: true,
+          }}
+          variant="standard"
+        />
+
+<TextField
+          id="standard-read-only-input"
+          label="Draw Id"
+          defaultValue={customer.id}
+          InputProps={{
+            readOnly: true,
+          }}
+          variant="standard"
+        />
+ </>
+    </Box>
+   
 </Grid>
 
 <TableContainer component={Paper}
