@@ -48,7 +48,8 @@ import {
   customerSearchState,
   phoneNoState,
   customerState,
-  monthState
+  monthState,
+  selectedCustomerState
 } from "../store/atoms/appState";
 import {
   collection,
@@ -115,6 +116,7 @@ export default function Customers() {
   const months = useRecoilValue(monthState);
   const setHeaderText = useSetRecoilState(headerTextState);
   const setCustomer = useSetRecoilState(customerState);
+  const setSelectedCustomer = useSetRecoilState(selectedCustomerState);
   const [customers, setDispCustomer ] = useRecoilState(customerSearchState);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -138,6 +140,10 @@ export default function Customers() {
       const customerId = e.currentTarget.dataset.custid
       console.log(customerId)
       setCustomer(customerId);
+      console.log('//////////////////-------------------')
+      const selectedCustomer = customers.filter(customer => customer.id === customerId)[0];
+      setSelectedCustomer(selectedCustomer);
+      console.log(selectedCustomer);
       navigate("/editcustomer");
   };
 
@@ -166,8 +172,6 @@ export default function Customers() {
             setError(error);
           }
         );
-        console.log('//////////////////-------------------')
-        console.log(customers);
         setIsLoading(false);
     }
   };

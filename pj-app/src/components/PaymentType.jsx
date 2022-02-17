@@ -132,7 +132,7 @@ const CustomSelect = React.forwardRef(function CustomSelect(props, ref) {
   return <SelectUnstyled {...props} ref={ref} components={components} />;
 });
 
-const paymentMethod = [{type:'Card', value:'Card'}, {type:'Cash', value:'Cash'}, {type:'Zylle', value:'Zylle'}, {type:'None', value:'None'}]
+const paymentMethod = [{key:1, value:'Card'}, {key:2, value:'Cash'}, {key:3, value:'Zylle'}, {key:4, value:'None'}]
 export default function PaymentMethod(props) {  
   console.log(props.method)
   return (

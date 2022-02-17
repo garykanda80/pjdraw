@@ -17,6 +17,11 @@ export const customerState = atom({
   default: {},
 });
 
+export const selectedCustomerState = atom({
+  key: "customer",
+  default: {},
+});
+
 export const customerCountState = atom({
   key: "customerCount",
   default: 0,
@@ -120,7 +125,8 @@ const appState = {
   phoneNoState,
   monthState,
   draw_detail,
-  customerState
+  customerState,
+  selectedCustomerState
 };
 
 export default appState;

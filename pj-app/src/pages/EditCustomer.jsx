@@ -48,7 +48,8 @@ import {
   phoneNoState,
   monthState,
   customerState,
-  draw_detail
+  draw_detail,
+  selectedCustomerState
 } from "../store/atoms/appState";
 import {
   collection,
@@ -113,38 +114,45 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function EditCustomers() {
+  const navigate = useNavigate();
   const user = useRecoilValue(userDetailsState);
   const months = useRecoilValue(monthState);
   const detail = useRecoilValue(draw_detail);
+  const customer = useRecoilValue(selectedCustomerState);
   const setHeaderText = useSetRecoilState(headerTextState);
   const customerId = useRecoilValue(customerState);
-  const [customers, setDispCustomer ] = useRecoilState(customerSearchState);
+  //const customer = useRecoilValue(customerSearchState);
   
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   //const [setDispCustomer, customerSearchState] = useState();
   const [expanded, setExpanded] = useState(false);
-  const customer = customers.filter(customer => customer.id === customerId);
+  //const customer = customers.filter(customer => customer.id === customerId);
  // const payment = customer.payment
- const payments = customer.map(a => a.payment)
- const payment = payments[0]
+ //const payments = customer.map(a => a.payment)
+ //const payment = payments[0]
  //const p = payment[0]
 console.log('+++++++++++++++++++')
 console.log(customer)
-console.log(payment)
-console.log(detail.payment)
-  const navigate = useNavigate();
+console.log(!customer)
+//console.log(payment)
+//console.log(detail.payment)
+
+const customerExists = Object.keys(customer).length === 0;
+
 
   const checkCustomer = () => {
-    if (customer.length === 0) {
-      {console.log(customer.length  + "out....")}
+    if (customerExists) {
+      console.log('switching........');
       navigate("/customer");
+    }else{
+      console.log('not switching........'); 
     }
   };
-
   checkCustomer();
+  
   useEffect(() => {   
-    setHeaderText("Customer");   
+    setHeaderText("Customer"); 
   }, []);
 
   return (
@@ -197,9 +205,9 @@ console.log(detail.payment)
     },
   }
 }>
-    <Typography>Customer Phone: {customer.map(a => a.customerPhone)}</Typography>
-    <Typography>Customer Draw ID: {customer.map(a => a.customerId)}</Typography>
-    <Typography>Draw ID: {customer.map(a => a.id)}</Typography>
+    <Typography>Customer Phone: {customer.customerPhone}</Typography>
+    <Typography>Customer Draw ID: {customer.customerId}</Typography>
+    <Typography>Draw ID: {customer.id}</Typography>
 </Grid>
 
 <TableContainer component={Paper}
@@ -231,10 +239,10 @@ sx={{
               </TableCell>
               {/* {console.log('++++++++++++' + payment[i])} */}
               <TableCell>
-                <PaymentMethod method={detail.payment[i].paymentMethod}/>
+                <PaymentMethod method={!customerExists && customer.payment[i].paymentMethod}/>
               </TableCell>
               <TableCell>
-                <PaymentDate date={detail.payment[i].paymentDate}/>
+                <PaymentDate date={!customerExists && customer.payment[i].paymentDate}/>
               </TableCell>
             </TableRow>
           ))}
