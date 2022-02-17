@@ -141,7 +141,7 @@ export default function PaymentMethod(props) {
       !props.method &&
     <CustomSelect>       
        {!props.method && paymentMethod.map((method) => (
-              <StyledOption value={method.value}>{method.type}</StyledOption>
+              <StyledOption value={method.value}>{method.value}</StyledOption>
               )
           )
         }
