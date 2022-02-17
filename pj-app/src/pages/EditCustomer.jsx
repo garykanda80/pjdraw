@@ -121,23 +121,10 @@ export default function EditCustomers() {
   const customer = useRecoilValue(selectedCustomerState);
   const setHeaderText = useSetRecoilState(headerTextState);
   const customerId = useRecoilValue(customerState);
-  //const customer = useRecoilValue(customerSearchState);
   
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  //const [setDispCustomer, customerSearchState] = useState();
   const [expanded, setExpanded] = useState(false);
-  //const customer = customers.filter(customer => customer.id === customerId);
- // const payment = customer.payment
- //const payments = customer.map(a => a.payment)
- //const payment = payments[0]
- //const p = payment[0]
-console.log('+++++++++++++++++++')
-console.log(customer)
-console.log(!customer)
-//console.log(payment)
-//console.log(detail.payment)
-
 const customerExists = Object.keys(customer).length === 0;
 
 
