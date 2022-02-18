@@ -125,8 +125,8 @@ export default function EditCustomers() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [expanded, setExpanded] = useState(false);
-const customerExists = Object.keys(customer).length === 0;
 
+  const customerExists = Object.keys(customer).length === 0;
 
   const checkCustomer = () => {
     if (customerExists) {
@@ -262,12 +262,12 @@ sx={{
               }
                
               </TableCell>
-              {/* {console.log('++++++++++++' + payment[i])} */}
+              {/* {console.log('++++++++++++' + !customerExists && customer.payment[i])} */}
               <TableCell>
-                <PaymentMethod method={!customerExists && customer.payment[i].paymentMethod}/>
+                <PaymentMethod method={!customerExists && customer.payment[i].paymentMethod} RowID={!customerExists && customer.payment[i].id}/>
               </TableCell>
               <TableCell>
-                <PaymentDate date={!customerExists && customer.payment[i].paymentDate}/>
+                <PaymentDate date={!customerExists && customer.payment[i].paymentDate} RowID={!customerExists && customer.payment[i].id}/>
               </TableCell>
             </TableRow>
           ))}

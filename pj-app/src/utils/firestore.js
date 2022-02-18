@@ -2,6 +2,7 @@ import {
   collection,
   doc,
   setDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { appdb } from "./firebase-config";
 
@@ -85,7 +86,7 @@ export const handleCreateCustomer = async () => {
         {id:1,month: 'January',paymentDate: "2022-02-28",paymentMethod: "Cash"},
           {id:2,month: 'February',paymentDate: "2022-02-28",paymentMethod: "Card"},
           {id:3,month: 'March',paymentDate: "2022-03-20",paymentMethod: "Zylle"},
-          {id:4,month: 'April',paymentDate: "",paymentMethod: ""},
+          {id:4,month: 'April',paymentDate: "",paymentMethod: "Data"},
           {id:5,month: 'May',paymentDate: "",paymentMethod: ""},
           {id:6,month: 'June',paymentDate: "",paymentMethod: ""},
           {id:7,month: 'July',paymentDate: "",paymentMethod: ""},
@@ -100,7 +101,8 @@ export const handleCreateCustomer = async () => {
 
   const collectionRef = collection(appdb, "draw");
     try {
-      await setDoc(doc(collectionRef, draw.drawID), draw_detail);
+      // await setDoc(doc(collectionRef, draw.drawID), draw_detail);
+      await updateDoc(doc(collectionRef, draw.drawID), draw_detail);
       return 1
     }catch (e) {
       console.error("Error adding document: ", e);
