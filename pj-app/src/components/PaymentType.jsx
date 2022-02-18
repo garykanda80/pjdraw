@@ -162,9 +162,7 @@ export default function PaymentMethod(props) {
   // const setCustomer = useSetRecoilState(selectedCustomerState);
   const [customer, setCustomer] = useRecoilState(selectedCustomerState);
   //console.log(customer);
-  const optionChange = (e) => { 
-    console.log("ChangeEvent:  "+ e + " & ChangeEvent ID:  "+ props.RowID);
-    updateRecord(
+  const optionChange = (e) => {  updateRecord(
       produce(customer, draft => {
         draft.payment[props.RowID-1].paymentMethod= e
     })
