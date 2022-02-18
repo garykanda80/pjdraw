@@ -17,23 +17,14 @@ import {
   Divider,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import TourIcon from "@mui/icons-material/Tour";
-import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
 import CategoryIcon from "@mui/icons-material/Category";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import LoyaltyIcon from "@mui/icons-material/Loyalty";
-import BadgeIcon from "@mui/icons-material/Badge";
 import EmailIcon from "@mui/icons-material/Email";
-import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
-
 import { AccountCircle } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { headerTextState, userDetailsState } from "../store/atoms/appState";
+import { headerTextState } from "../store/atoms/appState";
 
 import * as dbService from "../utils/firestore";
 
@@ -44,7 +35,6 @@ export default function TopBar() {
   const openAccount = Boolean(accountAnchorEl);
 
   const headerText = useRecoilValue(headerTextState);
-  const userDetails = useRecoilValue(userDetailsState);
 
   const { logout } = useAuth();
   const [error, setError] = useState("");
@@ -75,16 +65,9 @@ export default function TopBar() {
   };
   async function handleCustomer(){ 
     try {
-      const x = await dbService.handleCreateCustomer()
-      // if (x.status === "Success") {
-      //   console.log("customer added with Success")
-      // } else {
-      //   console.log("customer added with warning" + x.status)
-      //   //setError(x.msg);
-      // }
+      await dbService.handleCreateCustomer()
     } catch (error) {
       console.log("error adding customer" + error)
-      //setError(error);
     }
   };
 

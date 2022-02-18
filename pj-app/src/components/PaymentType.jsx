@@ -4,14 +4,13 @@ import OptionUnstyled, { optionUnstyledClasses } from '@mui/base/OptionUnstyled'
 import produce from 'immer';
 import PopperUnstyled from '@mui/base/PopperUnstyled';
 import { styled } from '@mui/system';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState} from "recoil";
 import { 
   selectedCustomerState
 } from "../store/atoms/appState";
 import {
   collection,
   doc,
-  setDoc,
   updateDoc
 } from "firebase/firestore";
 import { appdb } from "../utils/firebase-config";
@@ -158,15 +157,12 @@ const updateRecord = async (customer) => {
 }
 
 export default function PaymentMethod(props) { 
-  // const customer = useRecoilValue(selectedCustomerState);
-  // const setCustomer = useSetRecoilState(selectedCustomerState);
   const [customer, setCustomer] = useRecoilState(selectedCustomerState);
-  //console.log(customer);
   const optionChange = (e) => {  updateRecord(
       produce(customer, draft => {
         draft.payment[props.RowID-1].paymentMethod= e
     })
-    );
+  );
 
     return setCustomer(
       produce(customer, draft => {

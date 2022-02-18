@@ -4,30 +4,15 @@ import { Container, Snackbar } from "@mui/material";
 import TopBar from "../components/TopBar";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
-  appointmentsState,
-  customersState,
   headerTextState,
-  productsState,
   userDetailsState,
   usersState,
 } from "../store/atoms/appState";
-import {
-  collection,
-  onSnapshot,
-  orderBy,
-  query,
-  where,
-} from "firebase/firestore";
-import { appdb } from "../utils/firebase-config";
-import { CompressOutlined } from "@mui/icons-material";
 
 export default function AppLayout() {
   const user = useRecoilValue(userDetailsState);
   const setHeaderText = useSetRecoilState(headerTextState);
-  // const setCustomers = useSetRecoilState(customersState);
-  // const setProducts = useSetRecoilState(productsState);
   const setUsers = useSetRecoilState(usersState);
-  // const setAppointments = useSetRecoilState(appointmentsState);
   const [errorMsg, setErrorMsg] = useState("");
   const [error, setError] = useState(false);
 

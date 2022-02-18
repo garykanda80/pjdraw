@@ -1,15 +1,9 @@
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
-import MobileDatePicker from '@mui/lab/MobileDatePicker';
-import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
-import Stack from '@mui/material/Stack';
-import { styled } from '@mui/system';
-import makeStyles from "@material-ui/styles/makeStyles";
 import DateFnsUtils from "@date-io/date-fns";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { appdb } from "../utils/firebase-config";
 import { 
   selectedCustomerState
@@ -17,7 +11,6 @@ import {
 import {
   collection,
   doc,
-  setDoc,
   updateDoc
 } from "firebase/firestore";
 import produce from 'immer';

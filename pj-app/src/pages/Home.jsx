@@ -1,31 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState, useRecoilValue } from "recoil";
-import { customerCountState, headerTextState, userDetailsState } from "../store/atoms/appState";
-import { Button, Card, Grid, CardHeader, CardContent, Box, LinearProgress, IconButton } from "@mui/material";
-import * as dbService from "../utils/firestore";
+import { headerTextState, userDetailsState } from "../store/atoms/appState";
+import { Button, Card, Grid, CardHeader, CardContent } from "@mui/material";
 import { appdb } from "../utils/firebase-config";
 import {
   collection,
-  doc,
-  addDoc,
-  setDoc,
-  query,
-  where,
   getDocs,
-  serverTimestamp,
 } from "firebase/firestore";
 
 export default function Home() {
   const user = useRecoilValue(userDetailsState);
   const setHeaderText = useSetRecoilState(headerTextState);
-  const userDetails = useRecoilValue(userDetailsState);
   // const setCustomerCount = useRecoilValue(customerCountState);
   const [setCustomerCount, customerCountState] = useState();
   const [setDrawCount, drawCountState] = useState();
   const [isLoading, setIsLoading] = useState(false);
   let navigate = useNavigate();
 
+  //console.log("User State: "+ user);
   useEffect(() => {
     setHeaderText("Punjab Jewellers");
 
@@ -35,12 +28,12 @@ export default function Home() {
       const docRef = collection(appdb, "customer");
       try {
         const data = await getDocs(docRef);
-        data.forEach((doc) => {
-          // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, " => ", doc.data());
-        });
+        // data.forEach((doc) => {
+        //   // doc.data() is never undefined for query doc snapshots
+        //   //console.log(doc.id, " => ", doc.data());
+        // });
         const count = data.docs.length
-        console.log(`Customer Record Count => ${count}`)
+        //console.log(`Customer Record Count => ${count}`)
         customerCountState(count)
         setIsLoading(false);
         } catch (e) {     

@@ -1,35 +1,10 @@
 import React, { useEffect, useState } from "react";
 import {
-  AccordionDetails,
-  Link,
-  AccordionSummary,
-  Accordion,
-  MenuItem,
-  TableContainer,
-  TableCell,
-  TableBody,
-  TableHead,
-  TableRow,
-  Table,
-  rows,
-  Paper,
-  Label,
-  Button,
   Alert,
   Card,
   Box,
   LinearProgress,
-  Dialog,
-  DialogContent,
-  DialogTitle,
   Grid,
-  TextField,
-  DialogActions,
-  FormControl,
-  FormLabel,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
   Typography,
   CardContent,
   CardActionArea,
@@ -40,15 +15,11 @@ import {
 import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useRecoilState,  useSetRecoilState } from "recoil";
 import {
-  userDetailsState,
   headerTextState,
   customerSearchState,
-  phoneNoState,
   customerState,
-  monthState,
   selectedCustomerState
 } from "../store/atoms/appState";
 import {
@@ -56,14 +27,6 @@ import {
   onSnapshot,
   query,
   where,
-  doc,
-  getDoc,
-  serverTimestamp,
-  getDocs,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  orderBy,
 } from "firebase/firestore";
 import { appdb } from "../utils/firebase-config";
 import { useNavigate } from "react-router-dom";
@@ -112,27 +75,16 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Customers() {
-  const user = useRecoilValue(userDetailsState);
-  const months = useRecoilValue(monthState);
+  // const user = useRecoilValue(userDetailsState);
+  // const months = useRecoilValue(monthState);
   const setHeaderText = useSetRecoilState(headerTextState);
   const setCustomer = useSetRecoilState(customerState);
   const setSelectedCustomer = useSetRecoilState(selectedCustomerState);
   const [customers, setDispCustomer ] = useRecoilState(customerSearchState);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [expanded, setExpanded] = useState(false);
-
-  //const [setDispCustomer, customerSearchState] = useState();
-  const navigate = useNavigate();
-
-  // customerSearchState();
-  // const handleChange = (panel) => (isExpanded) => {
-  //   setExpanded(isExpanded ? panel : false);
-  // };
-
-// if (customers){
-//   customerSearchState(customers)
-// }
+  //const [expanded, setExpanded] = useState(false);
+ const navigate = useNavigate();
 
    //////////////////EDIT Customer/////////////
 
@@ -140,21 +92,15 @@ export default function Customers() {
       const customerId = e.currentTarget.dataset.custid
       console.log(customerId)
       setCustomer(customerId);
-      console.log('//////////////////-------------------')
-      const selectedCustomer = customers.filter(customer => customer.id === customerId)[0];
+       const selectedCustomer = customers.filter(customer => customer.id === customerId)[0];
       setSelectedCustomer(selectedCustomer);
       console.log(selectedCustomer);
       navigate("/editcustomer");
   };
 
   const handleCustomerSearch = async (e) => {
-    console.log("Hello2222-----")
     if ((e.target.value.toLowerCase()).length >= 10)
     {
-      //console.log(e.target.value.toLowerCase())
-    //   let custFilter = setPhoneNo.filter((prod) =>
-    //   prod.id.toLowerCase().includes(e.target.value.toLowerCase())
-    // );
     setIsLoading(true);
         const collectionRef = query(
           collection(appdb, "draw"),
@@ -175,9 +121,7 @@ export default function Customers() {
         setIsLoading(false);
     }
   };
-
-   //load list of values for available user roles
-   const [setPhoneNo, phoneNoState] = useState();
+ const [phoneNoState] = useState();
    useEffect(() => {
 
     const fetchPhone = async () => {
