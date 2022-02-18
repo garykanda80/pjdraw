@@ -1,8 +1,20 @@
 import * as React from 'react';
 import SelectUnstyled, { selectUnstyledClasses } from '@mui/base/SelectUnstyled';
 import OptionUnstyled, { optionUnstyledClasses } from '@mui/base/OptionUnstyled';
+import produce from 'immer';
 import PopperUnstyled from '@mui/base/PopperUnstyled';
 import { styled } from '@mui/system';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { 
+  selectedCustomerState
+} from "../store/atoms/appState";
+import {
+  collection,
+  doc,
+  setDoc,
+  updateDoc
+} from "firebase/firestore";
+import { appdb } from "../utils/firebase-config";
 
 const blue = {
   100: '#DAECFF',
@@ -132,27 +144,53 @@ const CustomSelect = React.forwardRef(function CustomSelect(props, ref) {
   return <SelectUnstyled {...props} ref={ref} components={components} />;
 });
 
-const paymentMethod = [{key:1, value:'Card'}, {key:2, value:'Cash'}, {key:3, value:'Zylle'}, {key:4, value:'None'}]
-export default function PaymentMethod(props) {  
-  console.log(props.method)
+const paymentMethod = [{key:1, value:'Card'}, {key:2, value:'Cash'}, {key:3, value:'Zylle'}]
+
+const updateRecord = async (customer) => {
+  console.log(customer.id)
+  const collectionRef = collection(appdb, "draw");
+    try {
+      await updateDoc(doc(collectionRef, customer.id), customer);
+      return 1;
+    } catch (error) {
+      console.log("Error writting to DB");
+    }
+}
+
+export default function PaymentMethod(props) { 
+  // const customer = useRecoilValue(selectedCustomerState);
+  // const setCustomer = useSetRecoilState(selectedCustomerState);
+  const [customer, setCustomer] = useRecoilState(selectedCustomerState);
+  //console.log(customer);
+  const optionChange = (e) => { 
+    console.log("ChangeEvent:  "+ e + " & ChangeEvent ID:  "+ props.RowID);
+    updateRecord(
+      produce(customer, draft => {
+        draft.payment[props.RowID-1].paymentMethod= e
+    })
+    );
+
+    return setCustomer(
+      produce(customer, draft => {
+        draft.payment[props.RowID-1].paymentMethod= e
+    })
+    );
+  };
+
   return (
     <>
     {
-      !props.method &&
-    <CustomSelect>       
-       {!props.method && paymentMethod.map((method) => (
+    (props.method) ?
+    <CustomSelect key={props.method} value={props.method} disabled>  
+              <StyledOption value={ props.method}>{ props.method}</StyledOption>
+  </CustomSelect>
+  :  <CustomSelect onChange={optionChange}>       
+       {paymentMethod.map((method) => (
               <StyledOption value={method.value}>{method.value}</StyledOption>
               )
           )
         }
-  </CustomSelect>
-      }
-
-{
-      props.method &&
-    <CustomSelect defaultValue={ props.method} disabled>  
-              <StyledOption value={ props.method}>{ props.method}</StyledOption>
-  </CustomSelect>
+  </CustomSelect>    
       }
 
       </>
