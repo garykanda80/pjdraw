@@ -10,7 +10,9 @@ import {
   CardActionArea,
   InputBase,
   IconButton,
+  Button
 } from "@mui/material";
+import produce from 'immer';
 
 import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
@@ -20,13 +22,14 @@ import {
   headerTextState,
   customerSearchState,
   customerState,
-  selectedCustomerState
+  selectedCustomerState,
+  drawState
 } from "../store/atoms/appState";
 import {
   collection,
   onSnapshot,
-  query,
-  where,
+  setDoc,
+  doc,
 } from "firebase/firestore";
 import { appdb } from "../utils/firebase-config";
 import { useNavigate } from "react-router-dom";
@@ -75,55 +78,104 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Customers() {
-  // const user = useRecoilValue(userDetailsState);
-  // const months = useRecoilValue(monthState);
   const setHeaderText = useSetRecoilState(headerTextState);
   const setCustomer = useSetRecoilState(customerState);
   const setSelectedCustomer = useSetRecoilState(selectedCustomerState);
+  const [drawData, setDraw] = useRecoilState(drawState);
   const [customers, setDispCustomer ] = useRecoilState(customerSearchState);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  //const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(false);
  const navigate = useNavigate();
+
 
    //////////////////EDIT Customer/////////////
 
-   const handleEditCustomer = (e) => {
-      const customerId = e.currentTarget.dataset.custid
-      console.log(customerId)
-      setCustomer(customerId);
-       const selectedCustomer = customers.filter(customer => customer.id === customerId)[0];
-      setSelectedCustomer(selectedCustomer);
-      console.log(selectedCustomer);
-      navigate("/editcustomer");
+  //  const handleEditCustomer = (e) => {
+  //     const customerId = e.currentTarget.dataset.custid
+  //     console.log(customerId)
+  //     setCustomer(customerId);
+  //      const selectedCustomer = customers.filter(customer => customer.id === customerId)[0];
+  //     setSelectedCustomer(selectedCustomer);
+  //     console.log(selectedCustomer);
+  //     navigate("/editcustomer");
+  // };
+
+  const formatDate = () => {
+    var d = new Date(),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [month, day, year].join('-');
+}
+
+  const handleAddDraw = async () => {
+    //setIsLoading(true);
+    const collectionRef = collection(appdb, "draw");
+    console.log("+++++++++++++");
+    console.log(drawData);
+    const date = formatDate();
+    const maxId = Math.max.apply(Math, drawData.map(function(o) { return o.drawId; }))
+    console.log(maxId);
+    const id = `draw-${maxId+1}`;
+    console.log(id);
+    const data = {
+      customerCount:0,
+      startedOn: date,
+      status: "Open",
+      drawId: maxId+1
+    }
+    await setDoc(doc(collectionRef, id), data);
+    const data1 = {
+      id:id,
+      customerCount:0,
+      startedOn: date,
+      status: "Open",
+      drawId: maxId+1
+    }
+    setDraw(
+          produce(drawData, draft => {
+        draft.push(data1);
+      })
+    )
+    
+    console.log(drawData);
+    //  setIsLoading(false);  
   };
 
-  const handleCustomerSearch = async (e) => {
-    if ((e.target.value.toLowerCase()).length >= 10)
-    {
-    setIsLoading(true);
-        const collectionRef = query(
-          collection(appdb, "customerDraw"),
-          where("customerPhone", "==", e.target.value.toLowerCase())
-        );
-        await onSnapshot(collectionRef,(snapshot) => {
-          setDispCustomer(
-              snapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data(),
-              }))
-            )        
-        },
-          (error) => {
-            setError(error);
-          }
-        );
-        setIsLoading(false);
-    }
+  const checkdraw = async () => {
+    console.log("78789789798798798");
+    console.log(drawData);
+    if (drawData.length === 0) {
+      console.log("draw exists");
+     // setIsLoading(true);
+        const collectionRef = collection(appdb, "draw");
+        console.log("+++++++++++++");
+        const data = await onSnapshot(collectionRef,(snapshot) => {
+          setDraw(
+            snapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }))
+          )
+        });
+       // setIsLoading(false);
+        //console.log(drawData);
+        return data; 
+      }
   };
- const [phoneNoState] = useState();
+  checkdraw();
+
    useEffect(() => {
+
     setHeaderText("Customer");
+    console.log("**************");
   }, []);
 
   return (
@@ -143,21 +195,7 @@ export default function Customers() {
           md={6}
           sx={{ justifyContent: "flex-start", alignItems: "center" }}
         >
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Enter Phone No.."
-              inputProps={{ "aria-label": "search" }}
-              onChange={
-               handleCustomerSearch
-              }
-            />
-          </Search>
-          
-        </Grid>
-        <Grid
+           <Grid
           item
           xs={6}
           sm={6}
@@ -165,14 +203,28 @@ export default function Customers() {
           sx={{
             display: "flex",
             flexDirection: "row",
-            justifyContent: "flex-end",
+            justifyContent: "flex-start",
           }}
         >
           <IconButton disabled={isLoading} 
-          //onClick={handleAddProduct}
+          onClick={handleAddDraw}
           >
             <AddCircleOutlineIcon color="secondary" />
           </IconButton>
+        </Grid>
+          
+        </Grid>
+            <Grid
+              item
+              xs={6}
+              sm={6}
+              md={6}
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "flex-end",
+              }}
+            >
         </Grid>
       </Grid>
       {error && <Alert severity="error">{error}</Alert>}
@@ -182,10 +234,13 @@ export default function Customers() {
         </Box>
       )}
 
-{customers &&
-        customers.map((customer) => (
+
+
+      
+{drawData &&
+        drawData.map((d) => (
           <Card
-            key={customer.id}
+            key={d.id}
             sx={{
               mt: 0.5,
               "&:before": {
@@ -198,8 +253,9 @@ export default function Customers() {
             }}
           >
             <CardActionArea
-            data-custid={customer.id}
-            onClick={handleEditCustomer}>
+            data-custid={d.id}
+            // onClick={handleEditCustomer}
+            >
 <CardContent>
                 <Grid
                   container
@@ -216,8 +272,7 @@ export default function Customers() {
                     md={6}
                     sx={{ justifyContent: "flex-start" }}
                   >
-<Typography>{customer.id}</Typography>
-<Typography>{customer.customerId}</Typography>
+<Typography>{d.id}</Typography>
                   </Grid>
                   </Grid>
 
@@ -227,7 +282,6 @@ export default function Customers() {
         )
         )}
 
-             
     </>
   );
 }

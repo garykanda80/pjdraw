@@ -76,33 +76,34 @@ import { appdb } from "./firebase-config";
 
 export const handleCreateCustomer = async () => {
   const draw = {
-    drawID: "draw1-b"
+    drawID: "draw-1001-2"
   };
 
   const draw_detail = {
-    customerId: "07846861338-b",
+    customerId: "07846861338-2",
     customerPhone: "07846861338",
+    customerName: "",
     payment: [
-        {id:1,month: 'January',paymentDate: "2022-02-28",paymentMethod: "Cash"},
-          {id:2,month: 'February',paymentDate: "2022-02-28",paymentMethod: "Card"},
-          {id:3,month: 'March',paymentDate: "2022-03-20",paymentMethod: "Zylle"},
-          {id:4,month: 'April',paymentDate: "",paymentMethod: "Data"},
-          {id:5,month: 'May',paymentDate: "",paymentMethod: ""},
-          {id:6,month: 'June',paymentDate: "",paymentMethod: ""},
-          {id:7,month: 'July',paymentDate: "",paymentMethod: ""},
-          {id:8,month: 'August',paymentDate: "",paymentMethod: ""},
-          {id:9,month: 'September',paymentDate: "",paymentMethod: ""},
-          {id:10,month: 'October',paymentDate: "",paymentMethod: ""},
-          {id:11,month: 'November',paymentDate: "",paymentMethod: ""},
-          {id:12,month: 'December',paymentDate: "",paymentMethod: ""}
+        {id:1,month: 'January',paymentDate: "",paymentMethod: "", updatedBy:""},
+          {id:2,month: 'February',paymentDate: "",paymentMethod: "", updatedBy:""},
+          {id:3,month: 'March',paymentDate: "",paymentMethod: "", updatedBy:""},
+          {id:4,month: 'April',paymentDate: "",paymentMethod: "", updatedBy:""},
+          {id:5,month: 'May',paymentDate: "",paymentMethod: "", updatedBy:""},
+          {id:6,month: 'June',paymentDate: "",paymentMethod: "", updatedBy:""},
+          {id:7,month: 'July',paymentDate: "",paymentMethod: "", updatedBy:""},
+          {id:8,month: 'August',paymentDate: "",paymentMethod: "", updatedBy:""},
+          {id:9,month: 'September',paymentDate: "",paymentMethod: "", updatedBy:""},
+          {id:10,month: 'October',paymentDate: "",paymentMethod: "", updatedBy:""},
+          {id:11,month: 'November',paymentDate: "",paymentMethod: "", updatedBy:""},
+          {id:12,month: 'December',paymentDate: "",paymentMethod: "", updatedBy:""}
     ]
    
   };
 
-  const collectionRef = collection(appdb, "draw");
+  const collectionRef = collection(appdb, "customerDraw");
     try {
-      // await setDoc(doc(collectionRef, draw.drawID), draw_detail);
-      await updateDoc(doc(collectionRef, draw.drawID), draw_detail);
+       await setDoc(doc(collectionRef, draw.drawID), draw_detail);
+      //await updateDoc(doc(collectionRef, draw.drawID), draw_detail);
       return 1
     }catch (e) {
       console.error("Error adding document: ", e);

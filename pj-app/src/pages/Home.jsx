@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSetRecoilState, useRecoilValue } from "recoil";
-import { headerTextState, userDetailsState } from "../store/atoms/appState";
+import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
+import { headerTextState, userDetailsState, drawState } from "../store/atoms/appState";
 import { Button, Card, Grid, CardHeader, CardContent } from "@mui/material";
 import { appdb } from "../utils/firebase-config";
 import {
   collection,
   getDocs,
+  onSnapshot
 } from "firebase/firestore";
 
 export default function Home() {
@@ -15,6 +16,7 @@ export default function Home() {
   // const setCustomerCount = useRecoilValue(customerCountState);
   const [setCustomerCount, customerCountState] = useState();
   const [setDrawCount, drawCountState] = useState();
+  const [draw, setDraw] = useRecoilState(drawState);
   const [isLoading, setIsLoading] = useState(false);
   let navigate = useNavigate();
 
@@ -28,12 +30,7 @@ export default function Home() {
       const docRef = collection(appdb, "customer");
       try {
         const data = await getDocs(docRef);
-        // data.forEach((doc) => {
-        //   // doc.data() is never undefined for query doc snapshots
-        //   //console.log(doc.id, " => ", doc.data());
-        // });
         const count = data.docs.length
-        //console.log(`Customer Record Count => ${count}`)
         customerCountState(count)
         setIsLoading(false);
         } catch (e) {     
@@ -41,24 +38,50 @@ export default function Home() {
       }
     }
 
-    const fetchDrawCount = async () => {
-      const docRef = collection(appdb, "draw");
-      try {
-        const data = await getDocs(docRef);
-        data.forEach((doc) => {
-          // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, " => ", doc.data());
-        });
-        const count = data.docs.length
-        console.log(`Customer Record Count => ${count}`)
-        drawCountState(count)
-        } catch (e) {     
-        return 'error'
-      }
-    }
+    // const fetchDrawCount = async () => {
+    //   const docRef = collection(appdb, "draw");
+    //   try {
+    //     const data = await getDocs(docRef);
+    //     data.forEach((doc) => {
+    //       // doc.data() is never undefined for query doc snapshots
+    //       console.log(doc.id, " => ", doc.data());
+    //     });
+    //     console.log(`Draw Record`);
+    //     console.log(data);
+    //     const count = data.docs.length
+    //     console.log(`Draw Record Count => ${count}`)
+    //     //setDraw(data.docs)
+    //     drawCountState(count)
+    //     } catch (e) {     
+    //     return 'error'
+    //   }
+    // }
 
+    const fetchDraw = async () => {
+      setIsLoading(true);
+        const collectionRef = collection(appdb, "draw");
+        console.log("+++++++++++++");
+        const data = await onSnapshot(collectionRef,(snapshot) => {
+          setDraw(
+            snapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }))
+          )
+          drawCountState( snapshot.docs.length)
+        },
+          (error) => {
+            console.log("+-+-+-+-+-+-+-++-+-+-+-+");
+            console.log(error.message);
+          }
+        );
+        setIsLoading(false);
+        console.log(draw);
+        return data;        
+    };
+    
     fetchCustomerCount();
-    fetchDrawCount();
+    fetchDraw();
 
   },[
     
@@ -69,6 +92,10 @@ export default function Home() {
     navigate(path);
   }
 
+  const drawRoute = () =>{ 
+    let path = `/draw`; 
+    navigate(path);
+  }
     
   return (
     <>
@@ -93,7 +120,7 @@ export default function Home() {
           <CardContent>
           <CardHeader title="Draws"></CardHeader>            
           <CardContent>
-          <Button onClick={customerRoute} variant = 'outlined'>Manage Draw</Button>
+          <Button onClick={drawRoute} variant = 'outlined'>Manage Draw</Button>
           </CardContent>
               <CardContent>Total Active Draws: 
                   <h1>

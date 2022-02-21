@@ -15,6 +15,7 @@ import Customer from "./pages/Customer";
 import Home from "./pages/Home";
 import Users from "./pages/Users";
 import EditCustomer from "./pages/EditCustomer";
+import Draw from "./pages/Draw";
 
 function RequireAuth({ children }) {
   const { currentUser } = useAuth();
@@ -54,6 +55,7 @@ function App() {
               <Route path="customer" element={<Customer />} /> 
               <Route path="editcustomer" element={<EditCustomer />} />
               <Route path="users" element={<Users />} />
+              <Route path="draw" element={<Draw />} />
             </Route>
           </Routes>
         </AuthProvider>
