@@ -10,7 +10,8 @@ import {
   CardActionArea,
   InputBase,
   IconButton,
-  Button
+  Button,
+  TextField
 } from "@mui/material";
 import produce from 'immer';
 
@@ -174,7 +175,7 @@ export default function Customers() {
 
    useEffect(() => {
 
-    setHeaderText("Customer");
+    setHeaderText("Draw");
     console.log("**************");
   }, []);
 
@@ -270,9 +271,58 @@ export default function Customers() {
                     xs={6}
                     sm={6}
                     md={6}
+                    lg={12}
                     sx={{ justifyContent: "flex-start" }}
                   >
-<Typography>{d.id}</Typography>
+         <Box
+      component="form"
+      sx={{
+        '& .MuiTextField-root': { m: 2, width: '25ch' },
+      }}
+      noValidate
+      autoComplete="off"
+    >        
+      <>
+<TextField
+          id="standard-read-only-input"
+          label="Draw ID"
+          defaultValue={d.id}
+          InputProps={{
+            readOnly: true,
+          }}
+          variant="standard"
+        />
+
+<TextField
+          id="standard-read-only-input"
+          label="Draw Status"
+          defaultValue={d.status}
+          InputProps={{
+            readOnly: true,
+          }}
+          variant="standard"
+        />
+        
+<TextField
+          id="standard-read-only-input"
+          label="Created On"
+          defaultValue={d.startedOn}
+          InputProps={{
+            readOnly: true,
+          }}
+          variant="standard"
+        />
+<TextField
+  id="standard-read-only-input"
+  label="Total Customer"
+  defaultValue={d.customerCount}
+  InputProps={{
+    readOnly: true,
+  }}
+  variant="standard"
+/>
+</>
+    </Box>
                   </Grid>
                   </Grid>
 
