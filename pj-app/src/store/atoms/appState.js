@@ -42,10 +42,10 @@ export const customerSearchState = atom({
   default: [],
 });
 
-// export const customerState = atom({
-//   key: "customer",
-//   default: [],
-// });
+export const manageDrawState = atom({
+  key: "manageDraw",
+  default: {},
+});
 
 export const DispCustomerState = atom({
   key: "Customer",
@@ -132,7 +132,8 @@ const appState = {
   draw_detail,
   customerState,
   selectedCustomerState,
-  drawState
+  drawState,
+  manageDrawState
 };
 
 export default appState;

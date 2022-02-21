@@ -90,7 +90,6 @@ export default function Customers() {
 
    const handleEditCustomer = (e) => {
       const customerId = e.currentTarget.dataset.custid
-      console.log(customerId)
       setCustomer(customerId);
        const selectedCustomer = customers.filter(customer => customer.id === customerId)[0];
       setSelectedCustomer(selectedCustomer);

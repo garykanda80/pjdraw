@@ -24,7 +24,8 @@ import {
   customerSearchState,
   customerState,
   selectedCustomerState,
-  drawState
+  drawState,
+  manageDrawState
 } from "../store/atoms/appState";
 import {
   collection,
@@ -82,8 +83,9 @@ export default function Customers() {
   const setHeaderText = useSetRecoilState(headerTextState);
   const setCustomer = useSetRecoilState(customerState);
   const setSelectedCustomer = useSetRecoilState(selectedCustomerState);
-  const [drawData, setDraw] = useRecoilState(drawState);
+  const [selectedDrawData, setDraw] = useRecoilState(drawState);
   const [customers, setDispCustomer ] = useRecoilState(customerSearchState);
+  const setManageDraw = useSetRecoilState(manageDrawState);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [expanded, setExpanded] = useState(false);
@@ -92,15 +94,14 @@ export default function Customers() {
 
    //////////////////EDIT Customer/////////////
 
-  //  const handleEditCustomer = (e) => {
-  //     const customerId = e.currentTarget.dataset.custid
-  //     console.log(customerId)
-  //     setCustomer(customerId);
-  //      const selectedCustomer = customers.filter(customer => customer.id === customerId)[0];
-  //     setSelectedCustomer(selectedCustomer);
-  //     console.log(selectedCustomer);
-  //     navigate("/editcustomer");
-  // };
+   
+   const handleDrawClick = (e) => {
+      const drawId = e.currentTarget.dataset.drawid
+      const selectedDraw = selectedDrawData.filter(d => d.id === drawId)[0];
+      console.log(selectedDraw);
+      setManageDraw(selectedDraw);
+      navigate("/managedraw");
+  };
 
   const formatDate = () => {
     var d = new Date(),
@@ -119,13 +120,9 @@ export default function Customers() {
   const handleAddDraw = async () => {
     //setIsLoading(true);
     const collectionRef = collection(appdb, "draw");
-    console.log("+++++++++++++");
-    console.log(drawData);
     const date = formatDate();
-    const maxId = Math.max.apply(Math, drawData.map(function(o) { return o.drawId; }))
-    console.log(maxId);
+    const maxId = Math.max.apply(Math, selectedDrawData.map(function(o) { return o.drawId; }))
     const id = `draw-${maxId+1}`;
-    console.log(id);
     const data = {
       customerCount:0,
       startedOn: date,
@@ -141,23 +138,16 @@ export default function Customers() {
       drawId: maxId+1
     }
     setDraw(
-          produce(drawData, draft => {
+          produce(selectedDrawData, draft => {
         draft.push(data1);
       })
     )
-    
-    console.log(drawData);
     //  setIsLoading(false);  
   };
 
   const checkdraw = async () => {
-    console.log("78789789798798798");
-    console.log(drawData);
-    if (drawData.length === 0) {
-      console.log("draw exists");
-     // setIsLoading(true);
+    if (selectedDrawData.length === 0) {     // setIsLoading(true);
         const collectionRef = collection(appdb, "draw");
-        console.log("+++++++++++++");
         const data = await onSnapshot(collectionRef,(snapshot) => {
           setDraw(
             snapshot.docs.map((doc) => ({
@@ -176,7 +166,7 @@ export default function Customers() {
    useEffect(() => {
 
     setHeaderText("Draw");
-    console.log("**************");
+   
   }, []);
 
   return (
@@ -238,8 +228,8 @@ export default function Customers() {
 
 
       
-{drawData &&
-        drawData.map((d) => (
+{selectedDrawData &&
+        selectedDrawData.map((d) => (
           <Card
             key={d.id}
             sx={{
@@ -254,8 +244,8 @@ export default function Customers() {
             }}
           >
             <CardActionArea
-            data-custid={d.id}
-            // onClick={handleEditCustomer}
+            data-drawid={d.id}
+            onClick={handleDrawClick}
             >
 <CardContent>
                 <Grid
