@@ -10,10 +10,8 @@ import {
   CardActionArea,
   InputBase,
   IconButton,
-  Button,
   TextField
 } from "@mui/material";
-import produce from 'immer';
 
 import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
@@ -24,19 +22,15 @@ import {
   customerSearchState,
   customerState,
   selectedCustomerState,
-  drawState,
-  manageDrawState
+  allCustomerState
 } from "../store/atoms/appState";
 import {
   collection,
   onSnapshot,
-  setDoc,
-  doc,
   query,
   where,
-  orderBy
 } from "firebase/firestore";
-import { appdb } from "../utils/firebase-config";
+import { appdb, auth } from "../utils/firebase-config";
 import { useNavigate } from "react-router-dom";
 
 const Search = styled("div")(({ theme }) => ({
@@ -82,96 +76,67 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function Customers() {
+export default function ManageCustomer() {
+  // const user = useRecoilValue(userDetailsState);
+  // const months = useRecoilValue(monthState);
   const setHeaderText = useSetRecoilState(headerTextState);
-  const setCustomer = useSetRecoilState(customerState);
-  const setSelectedCustomer = useSetRecoilState(selectedCustomerState);
-  const [selectedDrawData, setDraw] = useRecoilState(drawState);
-  const [customers, setDispCustomer ] = useRecoilState(customerSearchState);
-  const setManageDraw = useSetRecoilState(manageDrawState);
+  const [allCustomers, setAllCustomer ] = useRecoilState(allCustomerState);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [expanded, setExpanded] = useState(false);
  const navigate = useNavigate();
-
 
    //////////////////EDIT Customer/////////////
 
-   
-   const handleDrawClick = (e) => {
-      const drawId = e.currentTarget.dataset.drawid
-      const selectedDraw = selectedDrawData.filter(d => d.id === drawId)[0];
-      console.log(selectedDraw);
-      setManageDraw(selectedDraw);
-      navigate("/managedraw");
-  };
-
-  const formatDate = () => {
-    var d = new Date(),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
-
-    if (month.length < 2) 
-        month = '0' + month;
-    if (day.length < 2) 
-        day = '0' + day;
-
-    return [month, day, year].join('-');
-}
-
-  const handleAddDraw = async () => {
-    //setIsLoading(true);
-    const collectionRef = collection(appdb, "draw");
-    const date = formatDate();
-    const maxId = Math.max.apply(Math, selectedDrawData.map(function(o) { return o.drawId; }))
-    const id = `draw-${maxId+1}`;
-    const data = {
-      customerCount:0,
-      startedOn: date,
-      status: "Open",
-      drawId: maxId+1
-    }
-    await setDoc(doc(collectionRef, id), data);
-    const data1 = {
-      id:id,
-      customerCount:0,
-      startedOn: date,
-      status: "Open",
-      drawId: maxId+1
-    }
-    setDraw(
-          produce(selectedDrawData, draft => {
-        draft.push(data1);
-      })
-    )
-    //  setIsLoading(false);  
-  };
-
-  const checkdraw = async () => {
-    if (selectedDrawData.length === 0) {     // setIsLoading(true);
-        const collectionRef = collection(appdb, 'draw')
-                                .orderBy('drawId', 'desc');
-        const q = query(collectionRef);
-        const data = await onSnapshot(q,(snapshot) => {
-          setDraw(
+  
+   const checkCustomer = async () => {
+    if (allCustomers.length === 0) {     // setIsLoading(true);
+      //setIsLoading(true);
+      const collectionRef = query(
+        collection(appdb, "customer")
+      );
+      await onSnapshot(collectionRef,(snapshot) => {
+        setAllCustomer(
             snapshot.docs.map((doc) => ({
               id: doc.id,
               ...doc.data(),
             }))
-          )
-        });
-       // setIsLoading(false);
-        //console.log(drawData);
-        return data; 
+          )        
+      },
+        (error) => {
+          setError(error);
+        }
+      );
+      //setIsLoading(false);
       }
   };
-  checkdraw();
+  checkCustomer();
+
+  // const handleCustomerSearch = async (e) => {
+  //   if ((e.target.value.toLowerCase()).length >= 10)
+  //   {
+  //   setIsLoading(true);
+  //       const collectionRef = query(
+  //         collection(appdb, "customerDraw"),
+  //         where("customerPhone", "==", e.target.value.toLowerCase())
+  //       );
+  //       await onSnapshot(collectionRef,(snapshot) => {
+  //         setDispCustomer(
+  //             snapshot.docs.map((doc) => ({
+  //               id: doc.id,
+  //               ...doc.data(),
+  //             }))
+  //           )        
+  //       },
+  //         (error) => {
+  //           setError(error);
+  //         }
+  //       );
+  //       setIsLoading(false);
+  //   }
+  // };
 
    useEffect(() => {
-
-    setHeaderText("Draw");
-   
+    setHeaderText("Customers");
   }, []);
 
   return (
@@ -191,7 +156,21 @@ export default function Customers() {
           md={6}
           sx={{ justifyContent: "flex-start", alignItems: "center" }}
         >
-           <Grid
+          <Search>
+            <SearchIconWrapper>
+              <SearchIcon />
+            </SearchIconWrapper>
+            <StyledInputBase
+              placeholder="Search Customer.."
+              inputProps={{ "aria-label": "search" }}
+              // onChange={
+              //  handleCustomerSearch
+              // }
+            />
+          </Search>
+          
+        </Grid>
+        <Grid
           item
           xs={6}
           sm={6}
@@ -199,28 +178,14 @@ export default function Customers() {
           sx={{
             display: "flex",
             flexDirection: "row",
-            justifyContent: "flex-start",
+            justifyContent: "flex-end",
           }}
         >
           <IconButton disabled={isLoading} 
-          onClick={handleAddDraw}
+          //onClick={handleAddProduct}
           >
             <AddCircleOutlineIcon color="secondary" />
           </IconButton>
-        </Grid>
-          
-        </Grid>
-            <Grid
-              item
-              xs={6}
-              sm={6}
-              md={6}
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "flex-end",
-              }}
-            >
         </Grid>
       </Grid>
       {error && <Alert severity="error">{error}</Alert>}
@@ -230,13 +195,10 @@ export default function Customers() {
         </Box>
       )}
 
-
-
-      
-{selectedDrawData &&
-        selectedDrawData.map((d) => (
+{allCustomers &&
+        allCustomers.map((customer) => (
           <Card
-            key={d.id}
+            key={customer.id}
             sx={{
               mt: 0.5,
               "&:before": {
@@ -249,8 +211,8 @@ export default function Customers() {
             }}
           >
             <CardActionArea
-            data-drawid={d.id}
-            onClick={handleDrawClick}
+            data-custid={customer.id}
+            // onClick={handleEditCustomer}
             >
 <CardContent>
                 <Grid
@@ -266,22 +228,21 @@ export default function Customers() {
                     xs={6}
                     sm={6}
                     md={6}
-                    lg={12}
                     sx={{ justifyContent: "flex-start" }}
                   >
-         <Box
+<Box
       component="form"
       sx={{
-        '& .MuiTextField-root': { m: 2, width: '25ch' },
+        '& .MuiTextField-root': { m: 1, width: '20ch' },
       }}
       noValidate
       autoComplete="off"
-    >        
-      <>
+    >   
+    <>
 <TextField
           id="standard-read-only-input"
-          label="Draw ID"
-          defaultValue={d.id}
+          label="Customer Name"
+          defaultValue={customer.customerName}
           InputProps={{
             readOnly: true,
           }}
@@ -290,34 +251,26 @@ export default function Customers() {
 
 <TextField
           id="standard-read-only-input"
-          label="Draw Status"
-          defaultValue={d.status}
+          label="Phone"
+          defaultValue={customer.id}
           InputProps={{
             readOnly: true,
           }}
           variant="standard"
         />
-        
 <TextField
           id="standard-read-only-input"
-          label="Created On"
-          defaultValue={d.startedOn}
+          label="Customer Address"
+          defaultValue={customer.customerAddress}
           InputProps={{
             readOnly: true,
           }}
           variant="standard"
         />
-<TextField
-  id="standard-read-only-input"
-  label="Total Customer"
-  defaultValue={d.customerCount}
-  InputProps={{
-    readOnly: true,
-  }}
-  variant="standard"
-/>
-</>
-    </Box>
+
+        </>
+    </ Box>
+
                   </Grid>
                   </Grid>
 
@@ -325,9 +278,9 @@ export default function Customers() {
             </CardActionArea>
           </Card>
         )
-        )     
-        }
+        )}
 
+             
     </>
   );
 }

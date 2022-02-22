@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 import { headerTextState, userDetailsState, drawState } from "../store/atoms/appState";
-import { Button, Card, Grid, CardHeader, CardContent } from "@mui/material";
+import { Button, Card, Grid, CardHeader, CardContent, Box } from "@mui/material";
 import { appdb } from "../utils/firebase-config";
 import {
   collection,
@@ -11,7 +11,7 @@ import {
 } from "firebase/firestore";
 
 export default function Home() {
-  const user = useRecoilValue(userDetailsState);
+ 
   const setHeaderText = useSetRecoilState(headerTextState);
   // const setCustomerCount = useRecoilValue(customerCountState);
   const [setCustomerCount, customerCountState] = useState();
@@ -19,6 +19,7 @@ export default function Home() {
   const [draw, setDraw] = useRecoilState(drawState);
   const [isLoading, setIsLoading] = useState(false);
   let navigate = useNavigate();
+
 
   //console.log("User State: "+ user);
   useEffect(() => {
@@ -88,6 +89,11 @@ export default function Home() {
   ]);
 
   const customerRoute = () =>{ 
+    let path = `/managecustomer`; 
+    navigate(path);
+  }
+
+  const customerPaymentRoute = () =>{ 
     let path = `/customer`; 
     navigate(path);
   }
@@ -105,7 +111,12 @@ export default function Home() {
           <CardContent>
           <CardHeader title="Customer"></CardHeader>            
           <CardContent>
-          <Button onClick={customerRoute} variant = 'outlined'>Manage Customer</Button>
+          <Box sx={{ width: "100%" }}>
+                <Button onClick={customerPaymentRoute} variant = 'outlined'>Customer Payment</Button>
+                </ Box>
+                <Box sx={{ width: "100%", mt: "5%"}}>
+                <Button onClick={customerRoute} variant = 'outlined'>Customer</Button>
+                </ Box>
           </CardContent>
               <CardContent>Total Active Customers
                     <h1>

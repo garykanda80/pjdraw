@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
   AppBar,
   Toolbar,
@@ -24,7 +24,8 @@ import EmailIcon from "@mui/icons-material/Email";
 import { AccountCircle } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { headerTextState } from "../store/atoms/appState";
+import { headerTextState, userState } from "../store/atoms/appState";
+import { auth } from "../utils/firebase-config";
 
 import * as dbService from "../utils/firestore";
 
@@ -33,12 +34,15 @@ export default function TopBar() {
   const [accountAnchorEl, setAccountAnchorEl] = useState(null);
   const openMenu = Boolean(menuAnchorEl);
   const openAccount = Boolean(accountAnchorEl);
+  const setUser = useSetRecoilState(userState);
 
   const headerText = useRecoilValue(headerTextState);
 
   const { logout } = useAuth();
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
+  setUser(auth.currentUser.email);
 
   async function handleLogout() {
     setError("");
