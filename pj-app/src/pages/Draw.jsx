@@ -32,6 +32,8 @@ import {
   onSnapshot,
   setDoc,
   doc,
+  query,
+  where
 } from "firebase/firestore";
 import { appdb } from "../utils/firebase-config";
 import { useNavigate } from "react-router-dom";
@@ -148,7 +150,8 @@ export default function Customers() {
   const checkdraw = async () => {
     if (selectedDrawData.length === 0) {     // setIsLoading(true);
         const collectionRef = collection(appdb, "draw");
-        const data = await onSnapshot(collectionRef,(snapshot) => {
+        const q = query(collectionRef, where("status", "==", "Open"));
+        const data = await onSnapshot(q,(snapshot) => {
           setDraw(
             snapshot.docs.map((doc) => ({
               id: doc.id,
