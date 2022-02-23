@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
@@ -42,8 +42,7 @@ export default function TopBar() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  setUser(auth.currentUser.email);
-
+  
   async function handleLogout() {
     setError("");
     try {
@@ -74,6 +73,10 @@ export default function TopBar() {
       console.log("error adding customer" + error)
     }
   };
+
+  useEffect(() => {
+    setUser(auth.currentUser.email);
+  }, []);
 
 
   return (

@@ -124,13 +124,36 @@ export default function Customers() {
     //setIsLoading(true);
     const collectionRef = collection(appdb, "draw");
     const date = formatDate();
-    const maxId = Math.max.apply(Math, selectedDrawData.map(function(o) { return o.drawId; }))
-    const id = `draw-${maxId+1}`;
+    // let maxId = 1;
+    // if (selectedDrawData.length > 0){
+    //   maxId = Math.max.apply(Math, selectedDrawData.customer.map(function(o) { return o.drawId; })) + 1
+    // }
+  //   let maxId = 0;
+  // try{
+  //   const test = selectedDrawData.length > 0
+  //   maxId = Math.max.apply(Math, selectedDrawData.customer.map(function(o) { return o.drawId; })) + 1 
+  // }catch{
+  //      maxId = 1
+  // }
+
+  let maxId = 0;
+  const test = selectedDrawData.length > 0
+  console.log(test);
+  if(test === undefined || !test){
+    maxId = 101
+  }else{
+    maxId = Math.max.apply(Math, selectedDrawData.customer.map(function(o) { return o.drawId; })) + 1
+  }
+
+
+    const id = `draw-${maxId}`;
     const data = {
+      
       customerCount:0,
       startedOn: date,
       status: "Open",
-      drawId: maxId+1
+      drawId: maxId,
+      customer:[]
     }
     await setDoc(doc(collectionRef, id), data);
     const data1 = {
@@ -138,7 +161,8 @@ export default function Customers() {
       customerCount:0,
       startedOn: date,
       status: "Open",
-      drawId: maxId+1
+      drawId: maxId,
+      customer:[]
     }
     setDraw(
           produce(selectedDrawData, draft => {
@@ -148,29 +172,43 @@ export default function Customers() {
     //  setIsLoading(false);  
   };
 
-  const checkdraw = async () => {
-    if (selectedDrawData.length === 0) {     // setIsLoading(true);
-        const collectionRef = collection(appdb, 'draw')
-                                .orderBy('drawId', 'desc');
-        const q = query(collectionRef);
-        const data = await onSnapshot(q,(snapshot) => {
-          setDraw(
-            snapshot.docs.map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-            }))
-          )
-        });
-       // setIsLoading(false);
-        //console.log(drawData);
-        return data; 
-      }
-  };
-  checkdraw();
+  
+      const checkdraw = async () => {
+        if (selectedDrawData.length === 0) {     
+            const collectionRef = collection(appdb, 'draw');
+            const q = query(collectionRef);
+            const data = await onSnapshot(q,(snapshot) => {
+              setDraw(
+                snapshot.docs.map((doc) => ({
+                  id: doc.id,
+                  ...doc.data(),
+                }))
+              )
+            });
+            return data; 
+          }
+      };
+      checkdraw();
 
    useEffect(() => {
-
     setHeaderText("Draw");
+
+    // const checkdraw = async () => {
+    //   if (selectedDrawData.length === 0) {     // setIsLoading(true);
+    //       const collectionRef = collection(appdb, 'draw');
+    //       const q = query(collectionRef);
+    //       const data = await onSnapshot(q,(snapshot) => {
+    //         setDraw(
+    //           snapshot.docs.map((doc) => ({
+    //             id: doc.id,
+    //             ...doc.data(),
+    //           }))
+    //         )
+    //       });
+    //       return data; 
+    //     }
+    // };
+    // checkdraw();
    
   }, []);
 

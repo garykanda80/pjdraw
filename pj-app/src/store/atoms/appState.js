@@ -84,6 +84,30 @@ export const phoneNoState = atom({
   default: []
 }) 
 
+export const newCustomerDraw = atom({
+key: "customerDraw",
+default: {
+  customerId: "",
+  customerPhone: "",
+  customerName: "",
+  payment: [
+      {id:1,month: 'January',paymentDate: "",paymentMethod: "", updatedBy:""},
+        {id:2,month: 'February',paymentDate: "",paymentMethod: "", updatedBy:""},
+        {id:3,month: 'March',paymentDate: "",paymentMethod: "", updatedBy:""},
+        {id:4,month: 'April',paymentDate: "",paymentMethod: "", updatedBy:""},
+        {id:5,month: 'May',paymentDate: "",paymentMethod: "", updatedBy:""},
+        {id:6,month: 'June',paymentDate: "",paymentMethod: "", updatedBy:""},
+        {id:7,month: 'July',paymentDate: "",paymentMethod: "", updatedBy:""},
+        {id:8,month: 'August',paymentDate: "",paymentMethod: "", updatedBy:""},
+        {id:9,month: 'September',paymentDate: "",paymentMethod: "", updatedBy:""},
+        {id:10,month: 'October',paymentDate: "",paymentMethod: "", updatedBy:""},
+        {id:11,month: 'November',paymentDate: "",paymentMethod: "", updatedBy:""},
+        {id:12,month: 'December',paymentDate: "",paymentMethod: "", updatedBy:""}
+  ]
+ 
+}
+})
+
 export const monthState = atom({
   key: "months",
   default: [
@@ -145,7 +169,8 @@ const appState = {
   selectedCustomerState,
   drawState,
   manageDrawState,
-  userState
+  userState,
+  newCustomerDraw
 };
 
 export default appState;

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import CustomerDialog from "../components/CustomerDialog";
 import {
   Alert,
   Card,
@@ -181,11 +182,13 @@ export default function ManageCustomer() {
             justifyContent: "flex-end",
           }}
         >
-          <IconButton disabled={isLoading} 
+          {/* <IconButton disabled={isLoading} 
           //onClick={handleAddProduct}
           >
             <AddCircleOutlineIcon color="secondary" />
-          </IconButton>
+          </IconButton> */}
+
+          <CustomerDialog></CustomerDialog>
         </Grid>
       </Grid>
       {error && <Alert severity="error">{error}</Alert>}
@@ -242,7 +245,7 @@ export default function ManageCustomer() {
 <TextField
           id="standard-read-only-input"
           label="Customer Name"
-          defaultValue={customer.customerName}
+          defaultValue={customer.name}
           InputProps={{
             readOnly: true,
           }}
@@ -261,7 +264,7 @@ export default function ManageCustomer() {
 <TextField
           id="standard-read-only-input"
           label="Customer Address"
-          defaultValue={customer.customerAddress}
+          defaultValue={customer.address}
           InputProps={{
             readOnly: true,
           }}
