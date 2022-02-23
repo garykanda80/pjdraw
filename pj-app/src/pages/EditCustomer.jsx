@@ -15,6 +15,7 @@ import {
   TextField,
   CardContent,
   InputBase,
+  Button
 } from "@mui/material";
 
 import { styled, alpha } from "@mui/material/styles";
@@ -82,6 +83,8 @@ export default function EditCustomers() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const customerExists = Object.keys(customer).length === 0;
+
+ 
 
   const checkCustomer = () => {
     if (customerExists) {
@@ -185,6 +188,8 @@ export default function EditCustomers() {
           }}
           variant="standard"
         />
+
+<Button onClick={() => navigate(-1)}>Previous Page</ Button>
  </>
     </Box>
    

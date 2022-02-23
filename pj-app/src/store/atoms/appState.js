@@ -148,8 +148,8 @@ export const draw_detail = atom({
   }
 });
 export const userState = atom({
-  key: "email",
-  default: {},
+  key: "userEmail",
+  default: "",
 });
 
 

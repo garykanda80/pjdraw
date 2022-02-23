@@ -20,7 +20,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
 import CategoryIcon from "@mui/icons-material/Category";
-import EmailIcon from "@mui/icons-material/Email";
+import HomeIcon from '@mui/icons-material/Home';
 import { AccountCircle } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
@@ -53,6 +53,11 @@ export default function TopBar() {
     }
   }
 
+  
+  async function handleHomePage() {
+      navigate("/");
+  }
+
   const handleMenuClick = (event) => {
     setMenuAnchorEl(event.currentTarget);
   };
@@ -74,8 +79,9 @@ export default function TopBar() {
     }
   };
 
+  
   useEffect(() => {
-    setUser(auth.currentUser.email);
+   
   }, []);
 
 
@@ -93,7 +99,7 @@ export default function TopBar() {
           >
             <MenuIcon />
           </IconButton>
-          <IconButton
+          {/* <IconButton
             size="large"
             edge="start"
             color="inherit"
@@ -102,8 +108,19 @@ export default function TopBar() {
             onClick={handleCustomer}
           >
             <EmailIcon />
-          </IconButton>
+          </IconButton> */}
           
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="home"
+            sx={{ mr: 2 }}
+            onClick={handleHomePage}
+          >
+            <HomeIcon />
+          </IconButton>
+
           <Typography
             variant="h6"
             component="div"

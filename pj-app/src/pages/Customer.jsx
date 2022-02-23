@@ -10,6 +10,7 @@ import {
   CardActionArea,
   InputBase,
   IconButton,
+  TextField,
 } from "@mui/material";
 
 import { styled, alpha } from "@mui/material/styles";
@@ -167,11 +168,11 @@ export default function Customers() {
             justifyContent: "flex-end",
           }}
         >
-          <IconButton disabled={isLoading} 
+          {/* <IconButton disabled={isLoading} 
           //onClick={handleAddProduct}
           >
             <AddCircleOutlineIcon color="secondary" />
-          </IconButton>
+          </IconButton> */}
         </Grid>
       </Grid>
       {error && <Alert severity="error">{error}</Alert>}
@@ -212,11 +213,65 @@ export default function Customers() {
                     item
                     xs={6}
                     sm={6}
-                    md={6}
+                    md={12}
+                    lg={12}
                     sx={{ justifyContent: "flex-start" }}
                   >
-<Typography>{customer.id}</Typography>
-<Typography>{customer.customerId}</Typography>
+
+<Box
+      component="form"
+      sx={{
+        '& .MuiTextField-root': { m: 1, width: '20ch' },
+      }}
+      noValidate
+      autoComplete="off"
+    >        
+      <>
+      <TextField
+          id="standard-read-only-input"
+          label="Customer Draw ID"
+          defaultValue={customer.id}
+          InputProps={{
+            readOnly: true,
+          }}
+          variant="standard"
+        />
+        
+<TextField
+          id="standard-read-only-input"
+          label="Customer ID"
+          defaultValue={customer.customerId}
+          InputProps={{
+            readOnly: true,
+          }}
+          variant="standard"
+        />
+
+<TextField
+          id="standard-read-only-input"
+          label="Phone No."
+          defaultValue={customer.customerPhone}
+          InputProps={{
+            readOnly: true,
+          }}
+          variant="standard"
+        />
+
+<TextField
+          id="standard-read-only-input"
+          label="Customer Name"
+          defaultValue={customer.customerName}
+          InputProps={{
+            readOnly: true,
+          }}
+          variant="standard"
+        />
+
+       
+</>
+    </Box>
+
+
                   </Grid>
                   </Grid>
 

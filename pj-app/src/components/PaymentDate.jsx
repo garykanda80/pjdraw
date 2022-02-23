@@ -3,11 +3,12 @@ import TextField from '@mui/material/TextField';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import DateFnsUtils from "@date-io/date-fns";
-import { useRecoilState } from "recoil";
-import { appdb } from "../utils/firebase-config";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { appdb, auth } from "../utils/firebase-config";
 import { 
-  selectedCustomerState
+  selectedCustomerState, userState
 } from "../store/atoms/appState";
+
 import {
   collection,
   doc,
@@ -35,20 +36,11 @@ import produce from 'immer';
 //   }
 // });
 
-const updateRecord = async (customer) => {
-  console.log(customer.id)
-  console.log(customer)
-  const collectionRef = collection(appdb, "draw");
-    try {
-      await updateDoc(doc(collectionRef, customer.id), customer);
-      return 1;
-    } catch (error) {
-    }
-}
 
 export default function PaymentDate(props) {
   const [value, setValue] = React.useState(null);
   const [customer, setCustomer] = useRecoilState(selectedCustomerState);
+  const [user] = useRecoilValue(userState);
   //const classes = useStyles();
   const optionChange = (newValue) => { 
 
@@ -56,15 +48,27 @@ export default function PaymentDate(props) {
       newValue.getMonth() + 1
     }-${newValue.getDate()}-${newValue.getFullYear()}`;
 
+    const updateRecord = async (customer) => {
+      const collectionRef = collection(appdb, "customerDraw");
+        try {
+          await updateDoc(doc(collectionRef, customer.id), customer);
+          return 1;
+        } catch (error) {
+        }
+    }
+
+    
 updateRecord(
       produce(customer, draft => {
-        draft.payment[props.RowID-1].paymentDate= formattedDate
+        draft.payment[props.RowID-1].paymentDate= formattedDate;
+        draft.payment[props.RowID-1].updatedBy= auth.currentUser.email;
       })
     );
 
     return setCustomer(
       produce(customer, draft => {
-        draft.payment[props.RowID-1].paymentDate= formattedDate
+        draft.payment[props.RowID-1].paymentDate= formattedDate;
+        draft.payment[props.RowID-1].updatedBy=  auth.currentUser.email;
       })
     );
   };
