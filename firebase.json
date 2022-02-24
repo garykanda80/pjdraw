@@ -1,7 +1,7 @@
 {
   "hosting": {
-    "site": "pjdraw",
-    "public": "public",
+    "site": "pjdrawsite",
+    "public": "build",
     "ignore": [
       "firebase.json",
       "**/.*",

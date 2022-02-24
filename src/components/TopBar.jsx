@@ -166,7 +166,7 @@ export default function TopBar() {
             <MenuItem
               onClick={handleMenuClose}
               component={Link}
-              to={"customers"}
+              to={"managecustomer"}
             >
               <ListItemIcon>
                 <PeopleIcon fontSize="small" />
@@ -176,7 +176,7 @@ export default function TopBar() {
             <MenuItem
               onClick={handleMenuClose}
               component={Link}
-              to={"products"}
+              to={"draw"}
             >
               <ListItemIcon>
                 <CategoryIcon fontSize="small" />

@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "staging": "t-scarab-276321",
+    "default": "t-scarab-276321"
+  },
+  "targets": {}
+}
