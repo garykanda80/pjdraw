@@ -1,0 +1,28 @@
+html,
+body,
+#root {
+  font: 0.9rem sans-serif;
+  background: #f0f0f0;
+  height: 100%;
+  margin: 0;
+}
+
+.background {
+  background: linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%);
+  color: #fff;
+}
+
+.main-container {
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.418)),
+    url("./static/images/background.png");
+  background-size: cover;
+  background-position: center;
+}
+
+.main-container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
