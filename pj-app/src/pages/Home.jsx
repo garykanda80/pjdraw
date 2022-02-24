@@ -38,26 +38,6 @@ export default function Home() {
         return 'error'
       }
     }
-
-    // const fetchDrawCount = async () => {
-    //   const docRef = collection(appdb, "draw");
-    //   try {
-    //     const data = await getDocs(docRef);
-    //     data.forEach((doc) => {
-    //       // doc.data() is never undefined for query doc snapshots
-    //       console.log(doc.id, " => ", doc.data());
-    //     });
-    //     console.log(`Draw Record`);
-    //     console.log(data);
-    //     const count = data.docs.length
-    //     console.log(`Draw Record Count => ${count}`)
-    //     //setDraw(data.docs)
-    //     drawCountState(count)
-    //     } catch (e) {     
-    //     return 'error'
-    //   }
-    // }
-
     const fetchDraw = async () => {
       setIsLoading(true);
         const collectionRef = collection(appdb, "draw");

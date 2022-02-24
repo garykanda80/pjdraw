@@ -6,13 +6,12 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
   headerTextState,
   userDetailsState,
-  usersState,
+  userState,
 } from "../store/atoms/appState";
 
 export default function AppLayout() {
-  const user = useRecoilValue(userDetailsState);
+  const user = useRecoilValue(userState);
   const setHeaderText = useSetRecoilState(headerTextState);
-  const setUsers = useSetRecoilState(usersState);
   const [errorMsg, setErrorMsg] = useState("");
   const [error, setError] = useState(false);
 
@@ -23,99 +22,14 @@ export default function AppLayout() {
   useEffect(() => {
     setHeaderText("Punjab Jewellers");
 
-    // const fetchCustomers = async () => {
-    //   // const q = query(
-    //   //   collection(appdb, "customer"),
-    //   //   where("subsid", "==", user.subsid),
-    //   //   orderBy("custname")
-    //   // );
-    //   const q = query(
-    //       collection(appdb, "customer")
-    //     );
-    //     console.log(q);
-    //   try {
-    //     const unsubscribe = onSnapshot(q, (snapshot) => {
-         
-    //       setCustomers(
-    //         snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-    //       );
-    //     });
-    //     console.log(unsubscribe);
-    //     return unsubscribe;
-    //   } catch (error) {
-    //     setErrorMsg(error);
-    //     setError(true);
-    //   }
-    // };
 
-    // const fetchProducts = async () => {
-    //   const q = query(
-    //     collection(appdb, "product"),
-    //     where("subsid", "==", user.subsid),
-    //     orderBy("prodname")
-    //   );
-    //   try {
-    //     const unsubscribe = onSnapshot(q, (snapshot) => {
-    //       setProducts(
-    //         snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-    //       );
-    //     });
-    //     return unsubscribe;
-    //   } catch (error) {
-    //     setError(error);
-    //   }
-    // };
-
-    // const fetchUsers = async () => {
-    //   const q = query(
-    //     collection(appdb, "userrole"),
-    //     where("subsid", "==", user.subsid),
-    //     orderBy("usrfname")
-    //   );
-    //   try {
-    //     const unsubscribe = onSnapshot(q, (snapshot) => {
-    //       setUsers(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
-    //     });
-    //     return unsubscribe;
-    //   } catch (error) {
-    //     setError(error);
-    //   }
-    // };
-
-    // const fetchAppointments = async () => {
-    //   const q = query(
-    //     collection(appdb, "appointments"),
-    //     where("subsid", "==", user.subsid),
-    //     orderBy("aptdate")
-    //   );
-    //   try {
-    //     const unsubscribe = onSnapshot(q, (snapshot) => {
-    //       setAppointments(
-    //         snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-    //       );
-    //     });
-    //     return unsubscribe;
-    //   } catch (error) {
-    //     setError(error);
-    //   }
-    // };
-
-    if (Object.keys(user).length === 0) {
+    if (user) {
       <Navigate to="/login" />;
     } else {
-      console.log("error in app layout.jsx")
-      // fetchCustomers();
-      // fetchProducts();
-      // fetchUsers();
-      // fetchAppointments();
+      console.log("error in app layout.jsx")      
     }
   }, [
-    // setCustomers,
-    // setProducts,
-    setUsers,
-    // setHeaderText,
-    // user,
-    // setAppointments,
+    user,
   ]);
   return (
     <>

@@ -101,7 +101,6 @@ export default function Customers() {
    const handleDrawClick = (e) => {
       const drawId = e.currentTarget.dataset.drawid
       const selectedDraw = selectedDrawData.filter(d => d.id === drawId)[0];
-      console.log(selectedDraw);
       setManageDraw(selectedDraw);
       navigate("/managedraw");
   };
@@ -142,7 +141,7 @@ export default function Customers() {
   if(test === undefined || !test){
     maxId = 101
   }else{
-    maxId = Math.max.apply(Math, selectedDrawData.customer.map(function(o) { return o.drawId; })) + 1
+    maxId = Math.max.apply(Math, selectedDrawData.map(function(o) { return o.drawId; })) + 1
   }
 
 
